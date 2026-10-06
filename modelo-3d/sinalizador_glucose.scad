@@ -181,19 +181,20 @@ module glow_slot() {
         cube([36, 2.5, parede + 6], center = true);
 }
 
-// Textura: por omissão monólito liso (premium minimal).
-// Ative FLUTES=1 para nervuras verticais caneladas nos lados.
-FLUTES = 0;
+// Textura canelada SUBTRATIVA: sulcos verticais nos lados + traseira.
+// Subtrativo evita qualquer geometria flutuante. Cria o bordo serrilhado premium.
+flute_s  = 7.0;    // espacamento entre sulcos
+flute_gr = 3.4;    // raio do cilindro que escava
+flute_dp = 2.3;    // profundidade do sulco (parede 3.2 -> resta ~0.9)
 
-module fluted() {
+module fluted_cuts() {
     for (sx = [-1, 1])
-        for (zz = [-r + 5 : flute_s : prof_ext + r - 8]) {
-            ytop = (zz <= prof_ext - alt * tan(angulo))
-                       ? alt + r
-                       : alt * (prof_ext - zz) / (alt * tan(angulo)) + r;
-            translate([sx * (larg/2 + flute_p - flute_r), (ytop - r) / 2, zz])
-                cylinder(h = ytop + r, r = flute_r, center = true, $fn = 16);
-        }
+        for (zz = [-r + 5 : flute_s : prof_ext + r - 5])
+            translate([sx * (larg/2 + flute_gr - flute_dp), 0, zz])
+                cylinder(h = 400, r = flute_gr, center = true, $fn = 20);
+    for (xx = [-larg/2 + 5 : flute_s : larg/2 - 5])
+        translate([xx, 0, -r - (flute_gr - flute_dp)])
+            cylinder(h = 400, r = flute_gr, center = true, $fn = 20);
 }
 
 module postos() {
@@ -208,17 +209,9 @@ module postos() {
 // ------------------------------------------------------------
 // CORPO PRINCIPAL
 // ------------------------------------------------------------
-// Parametros da textura canelada (usada se FLUTES=1)
-flute_s = 5.5;    // espacamento entre nervuras
-flute_r = 1.7;    // raio da nervura
-flute_p = 1.4;    // saliencia (quanto sobressai)
-
 module corpo() {
     difference() {
-        union() {
-            caixa_outer();
-            if (FLUTES == 1) fluted();   // nervuras caneladas (opcional)
-        }
+        caixa_outer();
         caixa_inner();          // oco
         janela_cut();           // ecrã
         furos_frente();         // M2 display
