@@ -1,0 +1,13 @@
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+.pio/libdeps/
+.vscode/
+
+# OMO / interno
+.omo/
+
+# SO
+Thumbs.db
+desktop.ini

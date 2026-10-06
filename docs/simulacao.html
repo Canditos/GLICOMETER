@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sinalizador de Glucose — Simulação do ecrã na caixa (2.8")</title>
+<style>
+  body { background:#1a1a1a; color:#ddd; font-family:system-ui,sans-serif; margin:0; padding:28px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  .sub { color:#888; font-size:13px; margin-bottom:22px; }
+  .wrap { display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start; }
+  /* Caixa: 66x94 mm a 6 px/mm = 396x564 px */
+  .box { position:relative; width:396px; height:564px; border-radius:24px;
+         background:linear-gradient(145deg,#00d800 0%,#00a800 55%,#007a00 100%);
+         box-shadow:0 18px 50px rgba(0,0,0,.55), inset 0 2px 6px rgba(255,255,255,.25),
+                     inset 0 -6px 14px rgba(0,0,0,.35); }
+  /* Janela: 44x58 mm centrada; ecra visivel 2.8" ~43x57 mm */
+  .screen { position:absolute; left:68px; top:110px; width:260px; height:344px;
+            background:#0a0f14; border-radius:6px; overflow:hidden;
+            box-shadow:inset 0 0 18px rgba(0,0,0,.9), 0 0 0 3px rgba(0,0,0,.6); }
+  .screen .zonebg { position:absolute; inset:0; background:#00C800; }
+  .sc-top { position:absolute; top:0; left:0; right:0; font-size:11px; color:#000; padding:8px 10px; }
+  .sc-wifi { position:absolute; top:6px; left:8px; }
+  .sc-mute { position:absolute; top:8px; left:86px; color:#0055AA; }
+  .sc-night { position:absolute; top:8px; left:156px; color:#333; }
+  .sc-time { position:absolute; top:46px; left:0; right:0; text-align:center; font-size:44px; font-weight:bold; color:#000; font-variant-numeric:tabular-nums; }
+  .sc-wth { position:absolute; top:115px; left:0; right:0; text-align:center; font-size:16px; color:#000; }
+  .sc-sep { position:absolute; top:166px; left:14px; right:14px; height:1px; background:rgba(0,0,0,.35); }
+  .sc-glu { position:absolute; top:190px; left:0; right:0; text-align:center; font-size:72px; font-weight:bold; color:#000; line-height:1; }
+  .sc-del { position:absolute; top:300px; left:0; right:0; text-align:center; font-size:20px; color:#000; }
+  .sc-age { position:absolute; bottom:8px; left:10px; font-size:9px; color:#000; }
+  .sc-arr { position:absolute; bottom:16px; right:26px; }
+  /* etiquetas de dimensao */
+  .dim { position:absolute; color:rgba(255,255,255,.85); font-size:11px; letter-spacing:.5px; }
+  .dim-w { bottom:-24px; left:0; right:0; text-align:center; }
+  .dim-h { top:0; right:-40px; transform:rotate(90deg); transform-origin:left top; white-space:nowrap; padding-top:8px; }
+  .info { max-width:320px; }
+  .info h3 { font-size:15px; color:#ccc; margin:0 0 8px; }
+  .info ul { margin:0; padding-left:18px; font-size:13px; color:#bbb; line-height:1.7; }
+  .info li b { color:#fff; }
+  .note { margin-top:14px; font-size:12px; color:#999; border-top:1px solid #333; padding-top:10px; }
+  .scale90 { margin-top:14px; font-size:12px; color:#777; }
+</style>
+</head>
+<body>
+<h1>📟 Simulação — ecrã 2.8" na caixa (retrato)</h1>
+<div class="sub">Tamanho real da caixa (66 × 94 mm) com o ecrã 2.8" (43 × 57 mm) e o dashboard de 2 cartões — fundo verde (glicemia em range).</div>
+
+<div class="wrap">
+  <div class="box">
+    <div class="dim dim-w">66 mm</div>
+    <div class="dim dim-h">94 mm</div>
+    <div class="screen">
+      <div class="zonebg"></div>
+      <div class="sc-top">
+        <span class="sc-wifi"><svg width="14" height="14" viewBox="0 0 20 20"><path d="M2 7 Q10 1 18 7" stroke="#000" stroke-width="2.5" fill="none"/><path d="M5 11 Q10 6 15 11" stroke="#000" stroke-width="2.5" fill="none"/><path d="M8 14.5 Q10 12.5 12 14.5" stroke="#000" stroke-width="2.5" fill="none"/><circle cx="10" cy="17" r="1.6" fill="#000"/></svg></span>
+        <span class="sc-mute">MUTE</span><span class="sc-night">NIGHT</span>
+      </div>
+      <div class="sc-time">14:32</div>
+      <div class="sc-wth">18°C <svg width="20" height="20" viewBox="0 0 40 40" style="vertical-align:-4px;"><circle cx="20" cy="20" r="8" fill="#000"/><g stroke="#000" stroke-width="3"><line x1="20" y1="2" x2="20" y2="8"/><line x1="20" y1="32" x2="20" y2="38"/><line x1="2" y1="20" x2="8" y2="20"/><line x1="32" y1="20" x2="38" y2="20"/><line x1="7" y1="7" x2="11" y2="11"/><line x1="29" y1="29" x2="33" y2="33"/><line x1="7" y1="33" x2="11" y2="29"/><line x1="29" y1="11" x2="33" y2="7"/></g></svg></div>
+      <div class="sc-sep"></div>
+      <div class="sc-glu">132</div>
+      <div class="sc-del">+10 · 5min <svg width="20" height="20" viewBox="0 0 30 30" style="vertical-align:-2px;"><polygon points="15,2 5,20 25,20" fill="#000"/></svg></div>
+      <div class="sc-arr"></div>
+      <div class="sc-age">há 2 min</div>
+    </div>
+  </div>
+
+  <div class="info">
+    <h3>Dimensões reais</h3>
+    <ul>
+      <li><b>Caixa:</b> 66 × 94 × 50 mm (retrato, cantos r=4)</li>
+      <li><b>Janela:</b> 44 × 58 mm</li>
+      <li><b>Ecrã 2.8":</b> visível 43 × 57 mm (ILI9341 320×240, montado retrato)</li>
+      <li><b>Cartão 1 (topo):</b> relógio 14:32 + tempo 18°C ☀ (localização WiFi)</li>
+      <li><b>Cartão 2 (baixo):</b> glucose <b>132</b> (gigante) + delta <b>+10</b> (5 min) + seta</li>
+      <li><b>Fundo:</b> cor da zona (verde 91–180) · pisca em hipo/hiper</li>
+    </ul>
+    <div class="note">
+      ⚠️ Impressão a 100%: o mockup está à escala (6 px/mm) — o ecrã tem 43 × 57 mm reais.
+    </div>
+    <div class="scale90">
+      Para referência: 66 mm ≈ 2,6" · 94 mm ≈ 3,7" — um retrato tipo "mini-relógio/telefone" de cabeceira.
+    </div>
+  </div>
+</div>
+</body>
+</html>
