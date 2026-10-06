@@ -17,8 +17,8 @@ larg        = 58;     // largura frontal  (X)
 alt         = 76;     // altura frontal   (Y)
 prof_ext    = 34;     // profundidade externa (Z) — fino
 parede      = 1.8;    // espessura parede (spec: 1.6–2.0)
-r           = 6;      // raio organico (silhueta suave, menos "quadrada")
-angulo      = 22;     // cunha mais inclinada (spec: 15–30 graus)
+r           = 8;      // raio generoso (monolito suave, menos "quadrado")
+angulo      = 20;     // cunha inclinada (spec: 15–30 graus)
 
 // ------------------------------------------------------------
 // ECRÃ  (display ILI9341 240x320 -> area visivel ~ 40x53)
@@ -55,7 +55,7 @@ postos_d    = 2.4;    // furo poste M2 traseiro
 //  NAO EDITAR ABAIXO
 // ============================================================
 prof_int = prof_ext - 2*parede;
-$fn = 48;
+$fn = 96;
 
 // ------------------------------------------------------------
 // perfil 2D da caixa no plano XZ (vista de lado)
@@ -181,16 +181,19 @@ module glow_slot() {
         cube([36, 2.5, parede + 6], center = true);
 }
 
-// Textura canelada (fluted): nervuras verticais salientes premium nos lados
-flute_h = 1.6;    // altura da nervura (saliente)
-flute_s = 6;      // espacamento entre nervuras
-flute_r = 1.8;    // raio da nervura
+// Textura: por omissão monólito liso (premium minimal).
+// Ative FLUTES=1 para nervuras verticais caneladas nos lados.
+FLUTES = 0;
 
 module fluted() {
     for (sx = [-1, 1])
-        for (zz = [-r + 4 : flute_s : prof_ext + r - 4])
-            translate([sx * (larg/2 - 0.2), alt/2, zz])
-                cylinder(h = 100, r = flute_r, center = true, $fn = 16);
+        for (zz = [-r + 5 : flute_s : prof_ext + r - 8]) {
+            ytop = (zz <= prof_ext - alt * tan(angulo))
+                       ? alt + r
+                       : alt * (prof_ext - zz) / (alt * tan(angulo)) + r;
+            translate([sx * (larg/2 + flute_p - flute_r), (ytop - r) / 2, zz])
+                cylinder(h = ytop + r, r = flute_r, center = true, $fn = 16);
+        }
 }
 
 module postos() {
@@ -205,11 +208,16 @@ module postos() {
 // ------------------------------------------------------------
 // CORPO PRINCIPAL
 // ------------------------------------------------------------
+// Parametros da textura canelada (usada se FLUTES=1)
+flute_s = 5.5;    // espacamento entre nervuras
+flute_r = 1.7;    // raio da nervura
+flute_p = 1.4;    // saliencia (quanto sobressai)
+
 module corpo() {
     difference() {
         union() {
             caixa_outer();
-            fluted();               // nervuras caneladas (premium)
+            if (FLUTES == 1) fluted();   // nervuras caneladas (opcional)
         }
         caixa_inner();          // oco
         janela_cut();           // ecrã
