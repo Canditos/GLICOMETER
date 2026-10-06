@@ -55,6 +55,7 @@
 #define PIN_BUZZER 27
 #define PIN_MUTE 13   // botao: silencia TODOS os beeps (INPUT_PULLUP)
 #define PIN_NIGHT 14  // botao: backlight reduzido (INPUT_PULLUP)
+#define PIN_GLOW 33   // LED RGB NeoPixel — glow ambiente (cor da zona)
 #define BUTTON_DEBOUNCE_MS 50
 
 // ---------------------------------------------------------------------------

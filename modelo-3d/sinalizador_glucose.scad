@@ -13,12 +13,12 @@
 // ------------------------------------------------------------
 // PARAMETROS GERAIS  (medidas em mm)
 // ------------------------------------------------------------
-larg        = 66;     // largura frontal  (X)
-alt         = 86;     // altura frontal   (Y)
-prof_ext    = 42;     // profundidade externa (Z)
+larg        = 58;     // largura frontal  (X)
+alt         = 76;     // altura frontal   (Y)
+prof_ext    = 34;     // profundidade externa (Z) — fino
 parede      = 1.8;    // espessura parede (spec: 1.6–2.0)
-r           = 4;      // raio cantos suaves
-angulo      = 20;     // inclinacao do ecrao (spec: 15–30 graus)
+r           = 6;      // raio organico (silhueta suave, menos "quadrada")
+angulo      = 22;     // cunha mais inclinada (spec: 15–30 graus)
 
 // ------------------------------------------------------------
 // ECRÃ  (display ILI9341 240x320 -> area visivel ~ 40x53)
@@ -175,6 +175,24 @@ module placa_traseira() {
 // ------------------------------------------------------------
 // POSTOS internos (fixacao da placa da placa eletronica)
 // ------------------------------------------------------------
+module glow_slot() {
+    // fenda fina na base tras — saida do GLOW ambiente (LED RGB por baixo)
+    translate([-18, 6, -r])
+        cube([36, 2.5, parede + 6], center = true);
+}
+
+// Textura canelada (fluted): nervuras verticais salientes premium nos lados
+flute_h = 1.6;    // altura da nervura (saliente)
+flute_s = 6;      // espacamento entre nervuras
+flute_r = 1.8;    // raio da nervura
+
+module fluted() {
+    for (sx = [-1, 1])
+        for (zz = [-r + 4 : flute_s : prof_ext + r - 4])
+            translate([sx * (larg/2 - 0.2), alt/2, zz])
+                cylinder(h = 100, r = flute_r, center = true, $fn = 16);
+}
+
 module postos() {
     for (sx = [-1, 1], sy = [-1, 1])
         translate([sx*(larg/2 - 8), alt/2 + sy*(alt/2 - 8), -r + parede])
@@ -189,13 +207,17 @@ module postos() {
 // ------------------------------------------------------------
 module corpo() {
     difference() {
-        caixa_outer();
+        union() {
+            caixa_outer();
+            fluted();               // nervuras caneladas (premium)
+        }
         caixa_inner();          // oco
         janela_cut();           // ecrã
         furos_frente();         // M2 display
         botoes_cut();           // botao
         usb_cut();              // saida USB
         ventilacao_cut();       // ranhuras
+        glow_slot();            // saida do glow ambiente (base tras)
     }
     postos();                   // posts solidos (fixacao da placa)
 }

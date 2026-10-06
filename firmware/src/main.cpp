@@ -7,6 +7,7 @@
 
 #include <Arduino.h>
 #include <TFT_eSPI.h>
+#include <Adafruit_NeoPixel.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
@@ -21,6 +22,7 @@
 // ---------------------------------------------------------------------------
 static TFT_eSPI tft;
 static Preferences prefs;
+Adafruit_NeoPixel glowStrip(1, PIN_GLOW, NEO_GRB + NEO_KHZ800);
 
 static String accessToken;       // curto prazo (~2h), renovado via refresh token
 static bool wifiOk = false;
@@ -501,6 +503,23 @@ static void fetchWeather(double lat, double lon)
   hasWeather = (weatherCode >= 0);
 }
 
+// Glow ambiente na base (NeoPixel): cor = zona; pulsa em hipo/hiper (usa blinkOn)
+static void setGlowByZone()
+{
+  uint32_t c = glowStrip.Color(50, 50, 50);          // STALE: cinza suave
+  if (!egvStale)
+  {
+    bool severe = (egvValue < ALERT_LOW || egvValue > ALERT_HIGH);
+    if (egvValue < ALERT_LOW || egvValue > ALERT_HIGH) c = glowStrip.Color(255, 0, 0);
+    else if (egvValue <= 90) c = glowStrip.Color(255, 110, 0);
+    else if (egvValue <= 180) c = glowStrip.Color(0, 190, 60);
+    else c = glowStrip.Color(255, 190, 0);
+    if (severe && blinkOn) c = glowStrip.Color(0, 0, 0);   // pulsa: apaga entre ciclos
+  }
+  glowStrip.setPixelColor(0, c);
+  glowStrip.show();
+}
+
 static void render()
 {
   updateStale();
@@ -611,6 +630,7 @@ static void render()
   String age = "ha " + String(egvAgeMin) + " min";
   tft.setCursor(6, 310);
   tft.print(age);
+  setGlowByZone();
 }
 
 // ---------------------------------------------------------------------------
@@ -655,6 +675,9 @@ void setup()
   tft.setRotation(0); // 240x320 retrato (ecra 2.8")
   tft.fillScreen(TFT_BLACK);
   applyBacklight();
+  glowStrip.begin();
+  glowStrip.setBrightness(70);
+  glowStrip.show();
   tft.setTextSize(2);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.setCursor(20, 100);
