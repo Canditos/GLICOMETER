@@ -546,26 +546,27 @@ static void render()
     tft.setTextColor(0xFFE0, bg);
     String msg = "sem dados recentes";
     int w = tft.textWidth(msg);
-    tft.setCursor((240 - w) / 2, 150);
+    tft.setCursor((480 - w) / 2, 150);
     tft.print(msg);
+    setGlowByZone();
     return;
   }
 
-  // Cartao 1 (topo): relogio + tempo
+  // Cartao esquerdo: relogio + tempo
   time_t nowt = time(nullptr);
   struct tm *ti = localtime(&nowt);
   char hh[3], mm[3];
   if (ti) { snprintf(hh, sizeof(hh), "%02d", ti->tm_hour); snprintf(mm, sizeof(mm), "%02d", ti->tm_min); }
   else { strcpy(hh, "--"); strcpy(mm, "--"); }
-  tft.setTextSize(8);
+  tft.setTextSize(7);
   tft.setTextColor(fg, bg);
   int w8 = tft.textWidth(hh);
-  int xc = (240 - (w8 * 2 + 12)) / 2;
-  tft.setCursor(xc, 30);
+  int xc = (200 - (w8 * 2 + 12)) / 2;
+  tft.setCursor(xc, 92);
   tft.print(hh);
-  tft.fillRect(xc + w8 + 3, 56, 5, 5, fg);
-  tft.fillRect(xc + w8 + 3, 72, 5, 5, fg);
-  tft.setCursor(xc + w8 + 12, 30);
+  tft.fillRect(xc + w8 + 3, 114, 5, 5, fg);
+  tft.fillRect(xc + w8 + 3, 130, 5, 5, fg);
+  tft.setCursor(xc + w8 + 12, 92);
   tft.print(mm);
 
   if (hasWeather)
@@ -575,9 +576,9 @@ static void render()
     tft.setTextSize(3);
     tft.setTextColor(fg, bg);
     int tw = tft.textWidth(tbuf);
-    tft.setCursor((240 - tw) / 2 - 20, 104);
+    tft.setCursor((200 - tw) / 2 - 16, 178);
     tft.print(tbuf);
-    drawWeatherIcon(weatherCode, 168, 118, fg);
+    drawWeatherIcon(weatherCode, 152, 194, fg);
   }
   else
   {
@@ -585,19 +586,19 @@ static void render()
     tft.setTextColor(0x8410, bg);
     String m = "--C";
     int mw = tft.textWidth(m);
-    tft.setCursor((240 - mw) / 2, 110);
+    tft.setCursor((200 - mw) / 2, 180);
     tft.print(m);
   }
 
-  // separador entre cartoes
-  tft.drawLine(12, 140, 228, 140, fg);
+  // divisor vertical entre os dois cartoes
+  tft.drawLine(200, 24, 200, 296, fg);
 
-  // Cartao 2 (baixo): glucose — valor gigante
-  tft.setTextSize(13);
+  // Cartao direito: glucose — valor gigante (textSize 15)
+  tft.setTextSize(15);
   tft.setTextColor(fg, bg);
   String s = String(egvValue);
   int wv = tft.textWidth(s);
-  tft.setCursor((240 - wv) / 2, 152);
+  tft.setCursor(200 + (280 - wv) / 2, 66);
   tft.print(s);
 
   // delta (intervalo real de polling) + seta
@@ -608,27 +609,28 @@ static void render()
     delta = egvHist[egvHistLen - 1] - egvHist[egvHistLen - 2];
     dtSec = egvHistT[egvHistLen - 1] - egvHistT[egvHistLen - 2];
   }
-  tft.setTextSize(4);
+  tft.setTextSize(5);
   tft.setTextColor(fg, bg);
   char dbuf[12];
   snprintf(dbuf, sizeof(dbuf), "%+d", delta);
   int dw = tft.textWidth(dbuf);
   int mins = (dtSec >= 60) ? (int)(dtSec / 60) : 1;
-  int dx = (240 - dw) / 2 - 14;
-  tft.setCursor(dx, 272);
+  int dx = 200 + (280 - (dw + 64)) / 2;
+  tft.setCursor(dx, 226);
   tft.print(dbuf);
   tft.setTextSize(2);
   char lbl[16];
   snprintf(lbl, sizeof(lbl), "%dmin", mins);
-  tft.setCursor(dx + dw + 4, 280);
+  tft.setCursor(dx + dw + 6, 236);
   tft.print(lbl);
-  drawArrow(arrowForTrend(), 195, 284, fg, bg);
+  drawArrow(arrowForTrend(), 452, 240, fg, bg);
 
   // idade
-  tft.setTextSize(1);
+  tft.setTextSize(2);
   tft.setTextColor(fg, bg);
   String age = "ha " + String(egvAgeMin) + " min";
-  tft.setCursor(6, 310);
+  int aw = tft.textWidth(age);
+  tft.setCursor(200 + (280 - aw) / 2, 292);
   tft.print(age);
   setGlowByZone();
 }
@@ -672,7 +674,7 @@ void setup()
   prefs.begin("glucose", false); // NVS: refresh_token persistido
 
   tft.init();
-  tft.setRotation(0); // 240x320 retrato (ecra 2.8")
+  tft.setRotation(1); // 480x320 horizontal (ecra 3.5")
   tft.fillScreen(TFT_BLACK);
   applyBacklight();
   glowStrip.begin();

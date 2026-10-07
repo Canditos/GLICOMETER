@@ -3,86 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GLICOMETER — Conceito Premium Minimalista</title>
+<title>GLICOMETER 3.5" — Conceito Premium (horizontal)</title>
 <style>
   body { background:#0d0f12; color:#e8e8ea; font-family:-apple-system,system-ui,"Segoe UI",sans-serif; margin:0; padding:40px 28px; }
   h1 { font-size:22px; font-weight:600; margin:0 0 6px; letter-spacing:-.3px; }
-  .sub { color:#7d828a; font-size:13px; margin-bottom:36px; max-width:760px; line-height:1.6; }
-  .stage { display:flex; gap:60px; flex-wrap:wrap; align-items:center; }
-  /* ---- corpo do dispositivo: monólito grafite fosco, canelado, glow ambiente ---- */
-  .device { position:relative; width:340px; height:506px; border-radius:46px;
-    background:linear-gradient(150deg,#41474f 0%,#2b3038 42%,#1c2026 100%);
-    box-shadow:0 40px 90px rgba(0,0,0,.75), 0 6px 18px rgba(0,0,0,.6),
-      inset 0 1px 1px rgba(255,255,255,.14), inset 0 -2px 6px rgba(0,0,0,.5); }
-  /* canelado vertical subtil (fluted) por cima do corpo */
-  .device::before { content:""; position:absolute; inset:0; border-radius:46px; pointer-events:none;
+  .sub { color:#7d828a; font-size:13px; margin-bottom:34px; max-width:820px; line-height:1.6; }
+  .stage { display:flex; gap:54px; flex-wrap:wrap; align-items:center; }
+  /* caixa 94x64 mm a 5.5 px/mm = 517x352 */
+  .device { position:relative; width:517px; height:352px; border-radius:34px;
+    background:linear-gradient(150deg,#41474f 0%,#2b3038 44%,#1c2026 100%);
+    box-shadow:0 36px 80px rgba(0,0,0,.75), inset 0 1px 1px rgba(255,255,255,.14),
+      inset 0 -2px 6px rgba(0,0,0,.5); }
+  .device::before { content:""; position:absolute; inset:0; border-radius:34px; pointer-events:none;
     background:repeating-linear-gradient(90deg,
-      rgba(255,255,255,.055) 0 1.5px, rgba(0,0,0,0) 1.5px 7px,
-      rgba(0,0,0,.10) 7px 8.5px, rgba(0,0,0,0) 8.5px 14px);
-    mask:linear-gradient(180deg,transparent 6%,#000 14%,#000 90%,transparent 98%);
-    -webkit-mask:linear-gradient(180deg,transparent 6%,#000 14%,#000 90%,transparent 98%); }
-  /* glow ambiente na base (cor da zona) */
-  .device::after { content:""; position:absolute; left:8%; right:8%; bottom:-26px; height:60px;
-    background:radial-gradient(ellipse at center, rgba(0,220,80,.55) 0%, rgba(0,220,80,0) 70%);
+      rgba(255,255,255,.05) 0 1.3px, rgba(0,0,0,0) 1.3px 6px,
+      rgba(0,0,0,.09) 6px 7.4px, rgba(0,0,0,0) 7.4px 12px);
+    mask:linear-gradient(180deg,transparent 8%,#000 16%,#000 88%,transparent 96%);
+    -webkit-mask:linear-gradient(180deg,transparent 8%,#000 16%,#000 88%,transparent 96%); }
+  .device::after { content:""; position:absolute; left:12%; right:12%; bottom:-22px; height:52px;
+    background:radial-gradient(ellipse at center, rgba(0,220,80,.5) 0%, rgba(0,220,80,0) 70%);
     filter:blur(10px); border-radius:50%; z-index:-1; }
-  /* ecra: sem moldura, embutido, escuro premium */
-  .scr { position:absolute; left:50%; top:96px; transform:translateX(-50%);
-    width:250px; height:332px; border-radius:26px; background:#080a0c; overflow:hidden;
+  /* ecra 76x52 mm -> 418x286, sem moldura */
+  .scr { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:418px; height:286px; border-radius:20px; background:#080a0c; overflow:hidden;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 0 0 1px rgba(255,255,255,.045),
       inset 0 0 40px rgba(0,0,0,.9); }
-  .scr .row { position:absolute; left:0; right:0; text-align:center; }
-  .scr .t { top:34px; font-size:44px; font-weight:600; color:#e9ecf0; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
-  .scr .w { top:96px; font-size:15px; color:#6f757e; }
-  .scr .line { position:absolute; top:140px; left:44px; right:44px; height:1px; background:rgba(255,255,255,.06); }
-  .scr .g { top:168px; font-size:96px; font-weight:700; color:#2ee06a; letter-spacing:-3px; line-height:1; }
-  .scr .d { top:288px; font-size:19px; color:#8b9199; }
-  .scr .d b { color:#2ee06a; font-weight:600; }
-  .scr .a { top:322px; font-size:11px; color:#4a5058; }
-  /* chip de estado no topo do ecra */
-  .scr .st { position:absolute; top:12px; left:0; right:0; text-align:center; font-size:9px; color:#3c424a; letter-spacing:2px; text-transform:uppercase; }
+  .scr .st { position:absolute; top:10px; left:16px; font-size:9px; color:#3c424a; letter-spacing:2px; }
+  .scr .div { position:absolute; top:34px; bottom:24px; left:170px; width:1px; background:rgba(255,255,255,.07); }
+  /* painel esquerdo */
+  .scr .time { position:absolute; top:88px; left:0; width:170px; text-align:center; font-size:58px; font-weight:600; color:#eef1f4; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
+  .scr .wth { position:absolute; top:168px; left:0; width:170px; text-align:center; font-size:15px; color:#6f757e; }
+  /* painel direito */
+  .scr .glu { position:absolute; top:60px; left:170px; right:0; text-align:center; font-size:118px; font-weight:700; color:#2ee06a; letter-spacing:-4px; line-height:1; }
+  .scr .del { position:absolute; top:206px; left:170px; right:0; text-align:center; font-size:26px; color:#8b9199; }
+  .scr .del b { color:#2ee06a; font-weight:600; }
+  .scr .age { position:absolute; bottom:14px; left:170px; right:0; text-align:center; font-size:11px; color:#4a5058; }
   .info { max-width:360px; }
-  .info h3 { font-size:14px; color:#aeb4bc; margin:0 0 10px; font-weight:600; letter-spacing:.2px; }
-  .info ul { margin:0; padding-left:16px; font-size:13px; color:#8b9199; line-height:1.85; }
-  .info li b { color:#e8e8ea; font-weight:600; }
-  .swatches { display:flex; gap:10px; margin-top:18px; }
-  .sw { width:34px; height:34px; border-radius:50%; }
-  .cap { color:#6f757e; font-size:12px; margin-top:16px; line-height:1.6; }
+  .info h3 { font-size:14px; color:#aeb4bc; margin:0 0 10px; font-weight:600; }
+  .info ul { margin:0; padding-left:16px; font-size:13px; color:#8b9199; line-height:1.8; }
+  .info li b { color:#e8e8ea; }
 </style>
 </head>
 <body>
-<h1>GLICOMETER — Conceito Premium Minimalista</h1>
-<div class="sub">Monólito grafite fosco · canelado vertical subtil · ecrã sem moldura embutido · <b>glow ambiente</b> na base com a cor da zona. A direção de design: silencioso, tátil, sem ruído.</div>
+<h1>GLICOMETER 3.5" — Conceito Premium (horizontal)</h1>
+<div class="sub">Ecrã 3.5" 480×320 · dois painéis lado a lado · monólito grafite fosco · ecrã sem moldura · <b>glow ambiente</b> na base. O ecrã maior permite relógio+tempo e glucose sempre visíveis, com o valor enorme.</div>
 
 <div class="stage">
   <div class="device">
     <div class="scr">
       <div class="st">GLICOMETER</div>
-      <div class="row t">14:32</div>
-      <div class="row w">18°C · céu limpo</div>
-      <div class="line"></div>
-      <div class="row g">132</div>
-      <div class="row d"><b>+10</b> · 5 min&nbsp;&nbsp;<svg width="16" height="16" viewBox="0 0 30 30" style="vertical-align:-3px;"><polygon points="15,2 5,20 25,20" fill="#2ee06a"/></svg></div>
-      <div class="row a">há 2 min · mg/dL</div>
+      <div class="div"></div>
+      <div class="time">14:32</div>
+      <div class="wth">18°C · céu limpo</div>
+      <div class="glu">132</div>
+      <div class="del"><b>+10</b> · 5min&nbsp;&nbsp;<svg width="20" height="20" viewBox="0 0 30 30" style="vertical-align:-3px;"><polygon points="15,2 5,20 25,20" fill="#2ee06a"/></svg></div>
+      <div class="age">há 2 min · mg/dL</div>
     </div>
   </div>
 
   <div class="info">
-    <h3>Princípios do conceito</h3>
+    <h3>Porque o 3.5" horizontal é melhor</h3>
     <ul>
-      <li><b>Monólito suave</b> — uma só forma contínua, cantos generosos (r≈10), sem arestas duras</li>
-      <li><b>Canelado subtil</b> — nervuras verticais finas (fluted), tátil, não decorativo</li>
-      <li><b>Ecrã sem moldura</b> — embutido ao nível da superfície, escuro quando “desligado”</li>
-      <li><b>Um material, uma cor</b> — grafite fosco (PLA/PETG mate); nada de cores-toy</li>
-      <li><b>Glow ambiente</b> — a zona vive na <i>luz</i> da base, não no corpo (verde/laranja/amarelo/vermelho)</li>
-      <li><b>UI silenciosa</b> — valor enorme, o resto mínimo, tipografia tabular</li>
+      <li><b>Dois painéis reais</b> — relógio+tempo à esquerda, glucose à direita (como o CYGM), sem slideshow</li>
+      <li><b>Valor maior</b> — 480px de largura → o número fica ainda mais legível à distância</li>
+      <li><b>Ecrã 3.5"</b> — mais nítido; mesma família de driver (ILI9488/ILI9341-compatível, SPI)</li>
+      <li><b>Monólito grafite</b> + canelado + glow na base (cor da zona)</li>
+      <li><b>Horizontal</b> — assenta como um rádio-despertador de mesa, silhueta baixa e elegante</li>
     </ul>
-    <div class="swatches" title="cor do glow por zona">
-      <div class="sw" style="background:#2ee06a;" title="91–180 em range"></div>
-      <div class="sw" style="background:#ffb020;" title="70–90 / 181–250"></div>
-      <div class="sw" style="background:#ff3b30;" title="<70 / >250 (pisca)"></div>
-      <div class="sw" style="background:#3c424a;" title="STALE"></div>
-    </div>
-    <div class="cap">O glow na base tinge a mesa de cabeceira — vê-se o estado da glicemia sem acender o ecrã nem ler o número. Em hipo/hiper grave, pulsa.</div>
   </div>
 </div>
 </body>

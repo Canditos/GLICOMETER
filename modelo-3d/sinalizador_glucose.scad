@@ -13,26 +13,26 @@
 // ------------------------------------------------------------
 // PARAMETROS GERAIS  (medidas em mm)
 // ------------------------------------------------------------
-larg        = 58;     // largura frontal  (X)
-alt         = 76;     // altura frontal   (Y)
-prof_ext    = 34;     // profundidade externa (Z) — fino
+larg        = 94;     // largura frontal  (X) — PAISAGEM (ecra 3.5")
+alt         = 64;     // altura frontal   (Y)
+prof_ext    = 36;     // profundidade externa (Z)
 parede      = 1.8;    // espessura parede (spec: 1.6–2.0)
-r           = 8;      // raio generoso (monolito suave, menos "quadrado")
-angulo      = 20;     // cunha inclinada (spec: 15–30 graus)
+r           = 6;      // raio cantos
+angulo      = 18;     // inclinacao do ecrao (spec: 15–30 graus)
 
 // ------------------------------------------------------------
 // ECRÃ  (display ILI9341 240x320 -> area visivel ~ 40x53)
 // ------------------------------------------------------------
-janel_l     = 44;     // abertura janela (X) — retrato (ecra 2.8" 320x240)
-janel_a     = 58;     // abertura janela (Y)
+janel_l     = 76;     // abertura janela (X) — PAISAGEM (ecra 3.5" 480x320)
+janel_a     = 52;     // abertura janela (Y)
 janel_cx    = 0;      // centro janela em X (0 = centrado)
-janel_cy    = 4;      // centro janela em Y (deslocado p/ cima)
+janel_cy    = 0;      // centro janela em Y
 
 // ------------------------------------------------------------
 // PARAFUSOS M2 (placa + tampa)
 // ------------------------------------------------------------
-paraf_dx    = 36;     // distancia entre furos X
-paraf_dy    = 52;     // distancia entre furos Y
+paraf_dx    = 68;     // distancia entre furos X
+paraf_dy    = 44;     // distancia entre furos Y
 paraf_d     = 2.4;    // furo M2 (com folga)
 
 // ------------------------------------------------------------
