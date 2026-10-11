@@ -1,0 +1,310 @@
+{
+    "head": {
+        "docType": "1",
+        "editorVersion": "6.5.42",
+        "new\u9769": true,
+        "c_para": {
+            "package": "EasyEDA Schematic",
+            "BOM_Supplier": "LCSC",
+            "title": "GLICOMETER_ALL_IN_ONE_PRO",
+            "company": "GLICOMETER IoT",
+            "revision": "v2.2"
+        }
+    },
+    "nets": [
+        {
+            "name": "GND",
+            "nodes": [
+                "U1_GND",
+                "U2_GND",
+                "U3_GND",
+                "U4_GND",
+                "J1_GND",
+                "J2_GND",
+                "J3_PIN2",
+                "BZ1_MINUS",
+                "LED1_GND",
+                "C1_2",
+                "C2_2",
+                "C3_2",
+                "C4_2",
+                "C5_2"
+            ]
+        },
+        {
+            "name": "3V3",
+            "nodes": [
+                "U1_3V3",
+                "U3_VOUT",
+                "R8_1",
+                "R9_1",
+                "C3_1",
+                "C4_1"
+            ]
+        },
+        {
+            "name": "VBUS",
+            "nodes": [
+                "J1_VBUS",
+                "U2_VIN",
+                "D1_A",
+                "C1_1",
+                "J3_PIN1"
+            ]
+        },
+        {
+            "name": "VBAT",
+            "nodes": [
+                "J2_VBAT",
+                "U2_VBAT",
+                "Q2_S",
+                "C2_1",
+                "R10_1"
+            ]
+        },
+        {
+            "name": "VSYS",
+            "nodes": [
+                "Q2_D",
+                "D1_K",
+                "U3_VIN",
+                "U4_VDD",
+                "BZ1_PLUS",
+                "LED1_VDD"
+            ]
+        },
+        {
+            "name": "USB_DP",
+            "nodes": [
+                "J1_DP",
+                "U1_IO20"
+            ]
+        },
+        {
+            "name": "USB_DN",
+            "nodes": [
+                "J1_DN",
+                "U1_IO19"
+            ]
+        },
+        {
+            "name": "LCD_CS",
+            "nodes": [
+                "U1_IO15",
+                "J3_PIN3"
+            ]
+        },
+        {
+            "name": "LCD_RST",
+            "nodes": [
+                "U1_IO17",
+                "J3_PIN4"
+            ]
+        },
+        {
+            "name": "LCD_DC",
+            "nodes": [
+                "U1_IO16",
+                "J3_PIN5"
+            ]
+        },
+        {
+            "name": "LCD_MOSI",
+            "nodes": [
+                "U1_IO23",
+                "J3_PIN6"
+            ]
+        },
+        {
+            "name": "LCD_SCK",
+            "nodes": [
+                "U1_IO18",
+                "J3_PIN7"
+            ]
+        },
+        {
+            "name": "LCD_BL",
+            "nodes": [
+                "U1_IO21",
+                "J3_PIN8"
+            ]
+        },
+        {
+            "name": "LCD_MISO",
+            "nodes": [
+                "U1_IO19",
+                "J3_PIN9"
+            ]
+        },
+        {
+            "name": "I2S_BCLK",
+            "nodes": [
+                "U1_IO11",
+                "U4_BCLK",
+                "MIC1_CLK"
+            ]
+        },
+        {
+            "name": "I2S_LRCLK",
+            "nodes": [
+                "U1_IO12",
+                "U4_LRCLK",
+                "MIC1_WS"
+            ]
+        },
+        {
+            "name": "I2S_DIN",
+            "nodes": [
+                "U1_IO15_MIC",
+                "MIC1_DATA"
+            ]
+        },
+        {
+            "name": "I2S_DOUT",
+            "nodes": [
+                "U1_IO16_AMP",
+                "U4_DIN"
+            ]
+        },
+        {
+            "name": "SPK_P",
+            "nodes": [
+                "U4_OUTP",
+                "SPK1_PIN1"
+            ]
+        },
+        {
+            "name": "SPK_N",
+            "nodes": [
+                "U4_OUTN",
+                "SPK1_PIN2"
+            ]
+        },
+        {
+            "name": "BUZZER_CTRL",
+            "nodes": [
+                "U1_IO4",
+                "R6_1"
+            ]
+        },
+        {
+            "name": "LDR_SENSE",
+            "nodes": [
+                "U1_IO1",
+                "LDR1_PIN2",
+                "R7_1"
+            ]
+        },
+        {
+            "name": "BAT_SENSE",
+            "nodes": [
+                "U1_IO2",
+                "R10_2",
+                "R11_1"
+            ]
+        },
+        {
+            "name": "NEOPIXEL_PIN",
+            "nodes": [
+                "U1_IO38",
+                "LED1_DIN"
+            ]
+        },
+        {
+            "name": "BTN_SNOOZE",
+            "nodes": [
+                "U1_IO0",
+                "SW2_PIN1"
+            ]
+        },
+        {
+            "name": "MCU_EN",
+            "nodes": [
+                "U1_EN",
+                "SW1_PIN1",
+                "R8_2",
+                "C6_1"
+            ]
+        }
+    ],
+    "components": [
+        {
+            "id": "U1",
+            "name": "ESP32-S3-WROOM-1-N8R8",
+            "lcsc": "C2913200",
+            "desc": "Dual-Core MCU 8MB Flash 8MB PSRAM"
+        },
+        {
+            "id": "U2",
+            "name": "TP4056",
+            "lcsc": "C16581",
+            "desc": "1A Li-Ion Battery Charger SOP-8"
+        },
+        {
+            "id": "U3",
+            "name": "ME6211C33M5G-N",
+            "lcsc": "C82942",
+            "desc": "Ultra-Low Noise 3.3V LDO Regulator"
+        },
+        {
+            "id": "U4",
+            "name": "MAX98357AETE+T",
+            "lcsc": "C2682619",
+            "desc": "3.2W I2S Class-D Audio Amplifier"
+        },
+        {
+            "id": "J1",
+            "name": "TYPE-C-16PIN",
+            "lcsc": "C2765186",
+            "desc": "USB-C SMD Receptacle with CC1/CC2 5.1k"
+        },
+        {
+            "id": "J2",
+            "name": "XH2.54-2PLT",
+            "lcsc": "C52037449",
+            "desc": "21700 Battery Spring Wire Header"
+        },
+        {
+            "id": "J3",
+            "name": "PM2.54-1*14",
+            "lcsc": "C5307340",
+            "desc": "14-Pin Female Header for MSP3520 Display"
+        },
+        {
+            "id": "SPK1",
+            "name": "XH2.54-2PLT",
+            "lcsc": "C52037449",
+            "desc": "Speaker Output Header for 1511 Box"
+        },
+        {
+            "id": "BZ1",
+            "name": "MLT-8530",
+            "lcsc": "C94599",
+            "desc": "3V Active Magnetic Buzzer"
+        },
+        {
+            "id": "LED1",
+            "name": "WS2812B-B/T",
+            "lcsc": "C2761795",
+            "desc": "NeoPixel 5050 RGB LED"
+        },
+        {
+            "id": "LDR1",
+            "name": "GL5528",
+            "lcsc": "C2895420",
+            "desc": "Ambient Light Photoresistor"
+        },
+        {
+            "id": "SW1",
+            "name": "TS-1187A",
+            "lcsc": "C318884",
+            "desc": "Reset Tactile Switch"
+        },
+        {
+            "id": "SW2",
+            "name": "TS-1187A",
+            "lcsc": "C318884",
+            "desc": "Snooze / Mute Switch"
+        }
+    ]
+}
