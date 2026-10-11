@@ -1,14 +1,11 @@
 $fn = 64;
 
 // =====================================================================
-// CORPO GLICOMETER MASTER V8 - SUPORTE DE BATERIA 21700 COM CONTACTOS DE MOLA
+// CORPO GLICOMETER MASTER V9 - COM BOTÃO SNOOZE NO TOPO + BATERIA 21700 + SOM 1511
 // 1. Envelope exterior continuo com base plana na mesa PEI (Z=0)
-// 2. Berço para 21700 com ranhuras para lâminas de contacto padrão (12x12mm / Keystone)
-//    - Polo Positivo: Chapa metálica plana encaixada na fenda
-//    - Polo Negativo: Mola de pressão cónica encaixada na fenda
-//    - Passagens traseiras para os fios passarem direto para a placa
-// 3. ZERO SOLDADURA NA BATERIA: a bateria entra e sai como uma pilha normal!
-// 4. Altifalante 1511 integrado com grelha acústica
+// 2. Botão Snooze no Topo: Abertura ergonómica de 10x6mm para tecla tátil com clique fácil à noite
+// 3. Berço para 21700 com ranhuras de contacto de mola Keystone (sem soldar na bateria!)
+// 4. Altifalante 1511 integrado com grelha acústica traseira
 // 5. 100% Autoportante na mesa PEI (Z=0 na traseira - Zero suportes!)
 // =====================================================================
 
@@ -42,16 +39,15 @@ module rounded_rect(w, h, r) {
     }
 }
 
-// Berço para 21700 com ranhuras de contacto de mola (Comprimento interno = 73.5mm para folga da mola)
+// Berço para 21700 com ranhuras de contacto de mola
 module berco_bateria_21700_molas() {
     bat_d = 21.6;
     bat_r = bat_d / 2;
-    espaco_mola = 74.0; // Comprimento total com mola comprimida
+    espaco_mola = 74.0;
     y_bat = prof * 0.45;
     z_center = wall + bat_r - 2.0;
 
     translate([0, y_bat, z_center]) {
-        // Anéis de retenção laterais
         for (x_pos = [-22.0, 22.0]) {
             translate([x_pos, 0, 0])
             rotate([0, 90, 0]) {
@@ -69,19 +65,13 @@ module berco_bateria_21700_molas() {
             }
         }
 
-        // Torres das extremidades com ranhura vertical para encaixe das chapas de mola (12x12mm)
         for (side = [-1, 1]) {
             x_tower = side * (espaco_mola / 2);
             translate([x_tower, 0, 0]) {
                 difference() {
-                    // Torre sólida exterior
                     cube([3.6, 16.0, bat_d + 1.0], center=true);
-
-                    // Ranhura onde a chapa de metal de 12x12mm desliza e fica travada (espessura 0.8mm)
                     translate([-side * 0.5, 0, 0])
                     cube([1.2, 12.5, bat_d + 2.0], center=true);
-
-                    // Furo central para o fio passar para o interior da caixa
                     cube([6.0, 3.5, 3.5], center=true);
                 }
             }
@@ -118,6 +108,20 @@ module grelha_acustica_traseira() {
                 translate([gx, gz, 0])
                 cylinder(r=0.65, h=wall + 4.0, center=true);
             }
+        }
+    }
+}
+
+// Abertura e berço do Botão Snooze no topo inclinado da caixa
+module abertura_botao_snooze() {
+    btn_y = prof * 0.35;
+    btn_z = alt_f * 0.85; // No topo superior
+    translate([0, btn_y, btn_z])
+    rotate([15, 0, 0]) {
+        // Furo elíptico ergonómico para a tecla
+        hull() {
+            translate([-5.0, 0, 0]) cylinder(r=3.0, h=wall + 8.0, center=true);
+            translate([ 5.0, 0, 0]) cylinder(r=3.0, h=wall + 8.0, center=true);
         }
     }
 }
@@ -190,6 +194,9 @@ module corpo_clean() {
 
             // 5. Grelha Acústica
             grelha_acustica_traseira();
+
+            // 6. Botão de Snooze Ergonómico no Topo
+            abertura_botao_snooze();
         }
 
         // Berço com Ranhuras para Contactos de Mola (Keystone)
