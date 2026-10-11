@@ -1,5 +1,5 @@
-; EasyEDA Pro Netlist for GLICOMETER_ALL_IN_ONE_PRO
-; Generated automatically for JLCPCB manufacturing
+; EasyEDA Pro Netlist for GLICOMETER_ALL_IN_ONE_PRO_V3
+; Ready for JLCPCB SMT Automated Assembly
 
 [GND]
   U1_GND
@@ -7,10 +7,18 @@
   U3_GND
   U4_GND
   J1_GND
-  J2_GND
+  J2_PIN2
+  J3_PIN1
   J3_PIN2
-  BZ1_MINUS
+  J3_PIN5
+  J3_PIN6
+  J3_PIN7
+  J3_PIN8
+  J3_PIN32
+  J3_PIN33
+  J3_PIN34
   LED1_GND
+  BZ1_MINUS
   C1_2
   C2_2
   C3_2
@@ -20,20 +28,20 @@
 [3V3]
   U1_3V3
   U3_VOUT
+  J3_PIN35
   R8_1
   R9_1
   C3_1
-  C4_1
+  C5_1
 
 [VBUS]
   J1_VBUS
   U2_VIN
   D1_A
   C1_1
-  J3_PIN1
 
 [VBAT]
-  J2_VBAT
+  J2_PIN1
   U2_VBAT
   Q2_S
   C2_1
@@ -55,50 +63,36 @@
   J1_DN
   U1_IO19
 
-[LCD_CS]
+[LCD_DISP]
   U1_IO15
-  J3_PIN3
-
-[LCD_RST]
-  U1_IO17
-  J3_PIN4
-
-[LCD_DC]
-  U1_IO16
-  J3_PIN5
-
-[LCD_MOSI]
-  U1_IO23
-  J3_PIN6
-
-[LCD_SCK]
-  U1_IO18
-  J3_PIN7
-
-[LCD_BL]
-  U1_IO21
-  J3_PIN8
-
-[LCD_MISO]
-  U1_IO19
   J3_PIN9
 
+[LCD_PCLK]
+  U1_IO18
+  J3_PIN10
+
+[LCD_HSYNC]
+  U1_IO17
+  J3_PIN11
+
+[LCD_VSYNC]
+  U1_IO16
+  J3_PIN12
+
+[LCD_DE]
+  U1_IO4
+  J3_PIN13
+
 [I2S_BCLK]
-  U1_IO11
+  U1_IO1
   U4_BCLK
-  MIC1_CLK
 
 [I2S_LRCLK]
-  U1_IO12
+  U1_IO2
   U4_LRCLK
-  MIC1_WS
-
-[I2S_DIN]
-  U1_IO15_MIC
-  MIC1_DATA
 
 [I2S_DOUT]
-  U1_IO16_AMP
+  U1_IO3
   U4_DIN
 
 [SPK_P]
@@ -109,30 +103,16 @@
   U4_OUTN
   SPK1_PIN2
 
-[BUZZER_CTRL]
-  U1_IO4
-  R6_1
-
-[LDR_SENSE]
-  U1_IO1
-  LDR1_PIN2
-  R7_1
-
-[BAT_SENSE]
-  U1_IO2
-  R10_2
-  R11_1
-
-[NEOPIXEL_PIN]
-  U1_IO38
-  LED1_DIN
-
 [BTN_SNOOZE]
   U1_IO0
   SW2_PIN1
+
+[BUZZER_CTRL]
+  U1_IO47
+  R6_1
 
 [MCU_EN]
   U1_EN
   SW1_PIN1
   R8_2
-  C6_1
+  C8_1

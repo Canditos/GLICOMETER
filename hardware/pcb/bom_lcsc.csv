@@ -1,21 +1,21 @@
 Designator,Comment,Footprint,LCSC Part #,Description
-U1,ESP32-C5-WROOM-1-N8,MODULE-ESP32-C5-WROOM-1,C5186290,MCU RISC-V 240MHz Dual-Band Wi-Fi 6 (2.4GHz & 5GHz) BLE 5.0 8MB Flash
+U1,ESP32-S3-WROOM-1-N8R8,MODULE-ESP32-S3-WROOM-1,C2913200,MCU Dual-Core 240MHz Wi-Fi/BLE 8MB Flash 8MB PSRAM
 U2,TP4056,SOP-8,C16581,1A Standalone Linear Li-lon Battery Charger
-U3,AP2112K-3.3TRG1,SOT-23-5,C173361,LDO Linear Regulator 3.3V 600mA Ultra-Low Noise
+U3,ME6211C33M5G-N,SOT-23-5,C82942,LDO Linear Regulator 3.3V 500mA Ultra-Low Noise
 U4,MAX98357AETE+T,QFN-16_3x3mm,C2682619,Digital I2S Class-D Audio Amplifier 3.2W (Voice Output)
 MIC1,MSM261S4030H0R,MEMS-SMD_4x3mm,C2913204,Digital I2S MEMS Microphone Omnidirectional (Voice Input)
-SPK1,SPEAKER_HEADER_2P,CONN-TH_2P-P1.25MM,C2925298,Connector for 1W 8-Ohm Micro Speaker (20mm)
 J1,TYPE-C-16PIN,USB-C-16P-SMD,C2765186,USB-C Receptacle 16-pin SMD
-J2,JST-PH-2P,CONN-TH_2P-P2.00MM,C131337,Battery Connector 2.00mm Pitch
-J3,MSP3520_HEADER_14P,HDR-F-2.54_1X14,C224523,Female Header 1x14 2.54mm for LCD Display
-BZ1,ACTIVE_BUZZER_3V,BUZZER-SMD-8.5X8.5,C94599,Active Buzzer 3.3V/5V 85dB (Hardware Alarm Fallback)
+J2,XH2.54-2PLT,CONN-SMD_2P-P2.54MM,C52037449,Connector for 21700 Keystone Spring Contacts
+J3,FPC-0.5-40P,CONN-SMD_40P-P0.50MM,C262259,40-Pin 0.5mm Pitch Top-Contact FPC Connector for 4.3" TFT
+SPK1,XH2.54-2PLT,CONN-SMD_2P-P2.54MM,C52037449,Speaker Header for 1511 Cavity Box
+BZ1,MLT-8530,BUZZER-SMD-8.5X8.5,C94599,Active Buzzer 3.3V/5V 85dB
 Q1,S8050,SOT-23,C2146,NPN Transistor 40V 1.5A for Buzzer
 Q2,AO3401A,SOT-23,C15127,P-Channel MOSFET -30V -4A (Auto Power-Switching)
 D1,SS34,SMA,C15886,Schottky Diode 40V 3A (USB Reverse Protection)
 D2,1N4148WS,SOD-323,C81598,Fast Switching Diode (Buzzer Flyback)
 D3,RED_LED_0603,LED0603,C2286,Charge Status LED (Charging)
 D4,GREEN_LED_0603,LED0603,C2290,Charge Status LED (Full)
-LED1,WS2812B-B,LED-SMD_5050,C114586,Addressable RGB LED (Glow Indicator)
+LED1,WS2812B-B/T,LED-SMD_5050,C2761795,Addressable RGB LED (Glow Indicator)
 R1,5.1k,R0603,C23186,USB-C CC1 Pulldown Resistor 1%
 R2,5.1k,R0603,C23186,USB-C CC2 Pulldown Resistor 1%
 R3,2.4k,R0603,C23182,TP4056 R_PROG (Charge Current ~500mA)
@@ -36,6 +36,6 @@ C5,100nF,C0603,C14663,Decoupling Capacitor ESP32 100nF
 C6,100nF,C0603,C14663,Decoupling Capacitor LCD 100nF
 C7,100nF,C0603,C14663,Decoupling Capacitor Audio Amp
 C8,1uF,C0603,C15849,ESP32 EN Delay Capacitor 1uF
-SW1,KEY-SMD_4P-3X6,SW-SMD_3X6,C318884,Tactile Button (Reset)
-SW2,KEY-SMD_4P-3X6,SW-SMD_3X6,C318884,Tactile Button (Boot / Snooze / Mute)
+SW1,TS-1187A,SW-SMD_3X6,C318884,Tactile Button (Reset)
+SW2,TS-1187A,SW-SMD_3X6,C318884,Tactile Button (Top Snooze / Mute)
 LDR1,GL5528,TH-LDR-5MM,C2895420,Light Dependent Resistor (Auto-Brightness)
