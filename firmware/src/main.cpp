@@ -9,6 +9,7 @@
 #include <TFT_eSPI.h>
 #include <Adafruit_NeoPixel.h>
 #include <WiFi.h>
+#include <WiFiManager.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <Preferences.h>
@@ -154,7 +155,8 @@ static bool refreshAccessToken(bool force)
   }
 
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-  String body = "client_id=" + String(DEXCOM_CLIENT_ID) +
+  String currentId = prefs.getString("dexcom_id", String(DEXCOM_CLIENT_ID));
+  String body = "client_id=" + currentId +
                 "&refresh_token=" + refreshTok +
                 "&grant_type=refresh_token" +
                 "&redirect_uri=" + String(DEXCOM_REDIRECT_URI);
@@ -669,6 +671,7 @@ void setup()
   pinMode(PIN_NIGHT, INPUT_PULLUP);
   pinMode(PIN_BUZZER, OUTPUT);
   pinMode(PIN_BACKLIGHT, OUTPUT);
+  analogWrite(PIN_BACKLIGHT, 0); // 1. ANTI-FLASHBANG: Começa desligado
   analogWriteResolution(PIN_BACKLIGHT);
 
   prefs.begin("glucose", false); // NVS: refresh_token persistido
@@ -676,26 +679,50 @@ void setup()
   tft.init();
   tft.setRotation(1); // 480x320 horizontal (ecra 3.5")
   tft.fillScreen(TFT_BLACK);
-  applyBacklight();
+  applyBacklight(); // Só liga depois de o ecrã estar desenhado a preto
+  
   glowStrip.begin();
   glowStrip.setBrightness(70);
   glowStrip.show();
+  
   tft.setTextSize(2);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.setCursor(20, 100);
   tft.print("A ligar WiFi...");
+  tft.setCursor(20, 130);
+  tft.setTextColor(0x07E0, TFT_BLACK);
+  tft.print("Se falhar, ligue-se a:");
+  tft.setCursor(20, 160);
+  tft.setTextColor(0xFFE0, TFT_BLACK);
+  tft.print("GLICOMETER-Setup");
 
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-  unsigned long t0 = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - t0 < WIFI_TIMEOUT_MS)
-  {
-    delay(200);
+  WiFiManager wm;
+  wm.setConfigPortalTimeout(180); // 3. TIMEOUT: Tenta portal durante 3 min, se não, reinicia.
+  
+  String currentId = prefs.getString("dexcom_id", String(DEXCOM_CLIENT_ID));
+  String currentRt = prefs.getString("refresh_token", String(DEXCOM_REFRESH_TOKEN));
+
+  WiFiManagerParameter custom_dexcom_id("client_id", "Dexcom Client ID", currentId.c_str(), 64);
+  WiFiManagerParameter custom_dexcom_rt("refresh_token", "Dexcom Refresh Token", currentRt.c_str(), 256);
+
+  wm.addParameter(&custom_dexcom_id);
+  wm.addParameter(&custom_dexcom_rt);
+
+  bool res = wm.autoConnect("GLICOMETER-Setup");
+
+  if (!res) {
+    ESP.restart(); // Se o utilizador não configurou nada em 3 min, tenta a rede de casa outra vez
   }
-  wifiOk = (WiFi.status() == WL_CONNECTED);
 
-  // NTP (epoch para idade das leituras)
-  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  wifiOk = true;
+  prefs.putString("dexcom_id", custom_dexcom_id.getValue());
+  String novoRt = String(custom_dexcom_rt.getValue());
+  if (novoRt.length() > 0) {
+    prefs.putString("refresh_token", novoRt);
+  }
+
+  // 4. FUSO HORÁRIO DE LISBOA (Verão/Inverno) em vez de UTC
+  configTzTime("WET0WEST,M3.5.0/1,M10.5.0", "pool.ntp.org", "time.nist.gov");
 
   if (wifiOk)
   {
@@ -739,10 +766,17 @@ void loop()
   if (millis() - lastFetchMs >= FETCH_INTERVAL_MS)
   {
     lastFetchMs = millis();
-    bool isNew = fetchEgvs();
-    if (isNew && egvValue >= 0)
-    {
-      alarmForNewReading(egvValue); // alarme SO em leitura nova
+    
+    // 2. AUTO-RECONNECT WI-FI: Se a rede cair, tentar ligar novamente
+    if (WiFi.status() != WL_CONNECTED) {
+      WiFi.reconnect();
+      // Não fazemos o fetch desta vez, tenta na próxima iteração
+    } else {
+      bool isNew = fetchEgvs();
+      if (isNew && egvValue >= 0)
+      {
+        alarmForNewReading(egvValue); // alarme SO em leitura nova
+      }
     }
     render();
   }

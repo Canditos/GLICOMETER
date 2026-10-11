@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLICOMETER • Monitor Contínuo de Glicemia IoT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+            },
+            accent: {
+              500: '#06b6d4',
+              600: '#0891b2',
+            },
+            dark: {
+              900: '#0b0f17',
+              850: '#111726',
+              800: '#161f36',
+              700: '#1f2b48',
+              600: '#2d3d63',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass {
+      background: rgba(17, 23, 38, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: linear-gradient(135deg, rgba(22, 31, 54, 0.7) 0%, rgba(17, 23, 38, 0.85) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .glass-card:hover {
+      border-color: rgba(34, 197, 94, 0.3);
+      box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-slate-200 font-sans antialiased selection:bg-brand-500 selection:text-white min-h-screen">
+
+  <!-- TOP NAV -->
+  <header class="sticky top-0 z-50 glass border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-500 to-accent-500 flex items-center justify-center font-bold text-white shadow-lg shadow-brand-500/20">
+          G
+        </div>
+        <div>
+          <span class="text-lg font-bold tracking-tight text-white">GLICOMETER</span>
+          <span class="ml-2 text-xs font-mono px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/30">v2.1 Pro</span>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+        <a href="#conceito" class="hover:text-brand-400 transition">Conceito</a>
+        <a href="#engenharia" class="hover:text-brand-400 transition">Engenharia 3D</a>
+        <a href="#materiais" class="hover:text-brand-400 transition">Materiais & Impressão</a>
+        <a href="#bom" class="hover:text-brand-400 transition">BOM & Custos</a>
+        <a href="#pinout" class="hover:text-brand-400 transition">Pinout & Cabos</a>
+        <a href="#montagem" class="hover:text-brand-400 transition">Montagem</a>
+      </nav>
+      <div class="flex items-center space-x-3">
+        <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">
+          ● Ready to 3D Print
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(34,197,94,0.15),rgba(255,255,255,0))]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold mb-6">
+        <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+        <span>Projeto Open-Source • Nightscout & Dexcom / Libre IoT</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6">
+        Monitor Contínuo de Glicemia <br class="hidden sm:inline">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-400 via-emerald-300 to-accent-500">
+          Alta Precisão & Design Minimalista
+        </span>
+      </h1>
+      <p class="max-w-3xl mx-auto text-lg sm:text-xl text-slate-400 font-normal leading-relaxed mb-10">
+        Dispositivo de cabeceira e secretária com ecrã tátil IPS 3.5" (480×320) alimentado por ESP32. Caixa autoportante impressa com <strong class="text-slate-200">zero suportes</strong>, sistema híbrido snap-fit e gestão organizada de cabos.
+      </p>
+      
+      <div class="flex flex-wrap justify-center gap-4 text-sm font-semibold mb-14">
+        <a href="#montagem" class="px-6 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-dark-900 font-bold transition shadow-lg shadow-brand-500/25">
+          Guia de Montagem
+        </a>
+        <a href="#materiais" class="px-6 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-white border border-slate-700 transition">
+          Ficheiros 3D & Fatiador
+        </a>
+        <a href="#bom" class="px-6 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-white border border-slate-700 transition">
+          Lista de Peças (~25€)
+        </a>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        <div class="glass-card rounded-2xl p-5 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-brand-400 font-mono">0 mm³</div>
+          <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mt-1">Suportes na Mesa</div>
+        </div>
+        <div class="glass-card rounded-2xl p-5 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-accent-500 font-mono">3.5"</div>
+          <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mt-1">Ecrã 480×320 SPI</div>
+        </div>
+        <div class="glass-card rounded-2xl p-5 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">Snap-Fit</div>
+          <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mt-1">Fecho Sem Parafusos</div>
+        </div>
+        <div class="glass-card rounded-2xl p-5 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 font-mono">~25 €</div>
+          <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mt-1">Custo Total BOM</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEITO & OBJETIVO -->
+  <section id="conceito" class="py-16 border-t border-slate-800/60 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">01 / CONCEITO</h2>
+        <h3 class="text-3xl font-bold text-white tracking-tight">Vigilância Passiva e Descanso Mental</h3>
+        <p class="text-slate-400 mt-3 leading-relaxed">
+          Para pessoas com Diabetes Tipo 1 ou utilizadores de CGM (Dexcom G6/G7, FreeStyle Libre 2/3), a monitorização noturna e de secretária exige visualização imediata da glicemia sem necessidade de ligar o telemóvel nem arriscar distrações com notificações.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center font-bold text-lg mb-4">
+            📡
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Sincronização Cloud Contínua</h4>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Ligação Wi-Fi direta com servidores Nightscout, Dexcom Share ou LibreLinkUp via REST API. Atualizações a cada 60 a 300 segundos com seta de tendência.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-accent-500/10 text-accent-500 flex items-center justify-center font-bold text-lg mb-4">
+            🎨
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Interface Otimizada de Alto Contraste</h4>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Visualização gráfica clara com código de cores: Verde (Normoglicemia 70–180 mg/dL), Amarelo (Hiperglicemia), Vermelho (Hipoglicemia crítica com alerta sonoro/luminoso).
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-lg mb-4">
+            📐
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Ergonomia de Secretária a 78°</h4>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Ângulo de inclinação calibrado contra reflexos de luz ambiente. Linha de visão perfeita quer esteja sentado ao teclado ou deitado na mesa de cabeceira.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGENHARIA 3D & RESOLUÇÕES -->
+  <section id="engenharia" class="py-16 bg-dark-850/60 border-t border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">02 / ENGENHARIA ESTRUTURAL</h2>
+        <h3 class="text-3xl font-bold text-white tracking-tight">Design Mecânico Sem Suportes & Snap-Fit Travado</h3>
+        <p class="text-slate-400 mt-3 leading-relaxed">
+          Cada detalhe geométrico foi recalculado após testes de tolerância para eliminar completamente suportes no fatiador e evitar que a moldura ou os travões do LCD se soltem.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
+        <div class="space-y-6">
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-brand-500">
+            <h4 class="text-lg font-bold text-white flex items-center justify-between">
+              <span>1. Moldura Frontal Lisa & Encaixe Snap-Fit</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 font-mono">PLA</span>
+            </h4>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+              Face frontal 100% contínua e sem furos passantes. Na aba macho interior de 3.0 mm de profundidade, existem <strong>4 dentes de fecho com rampa a 45°</strong> que encaixam nas 4 cavidades correspondentes do corpo com um clique sonoro audível.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-accent-500">
+            <h4 class="text-lg font-bold text-white flex items-center justify-between">
+              <span>2. Corpo Autoportante Deitado na Mesa</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-accent-500/20 text-accent-300 font-mono">Zero Suportes</span>
+            </h4>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+              O STL é exportado deitado de costas na mesa PEI (área plana de 88 × 46 mm em $Z=0$). Paredes com ângulo de rascunho de ~12° e suportes internos do ESP32 com nervuras chanfradas a 45°. <strong>Suportes desligados no fatiador!</strong>
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-amber-500">
+            <h4 class="text-lg font-bold text-white flex items-center justify-between">
+              <span>3. Clips do LCD Maciços com Rebaixo</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">PETG Obrigatório</span>
+            </h4>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+              Eliminado o problema dos antigos clips que descolavam entre camadas. O novo clip é 100% preenchido (espessura 2.4 mm) e possui um rebaixo cónico superior onde os 4 pinos fendidos da moldura travam mecanicamente de forma definitiva.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-cyan-500">
+            <h4 class="text-lg font-bold text-white flex items-center justify-between">
+              <span>4. Pente Organizador de Cabos Flexível</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">PETG Flexível</span>
+            </h4>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+              Pente elástico com 10 ranhuras tipo fecho-clip com entrada estreitada (1.15 mm) e canal circular (1.4 mm). Alinha os cabos DuPont numa fita plana ordenada, evitando emaranhamentos e folgas soltas no interior da caixa.
+            </p>
+          </div>
+        </div>
+
+        <!-- Galeria de Imagens de Engenharia -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="glass rounded-xl overflow-hidden group">
+            <img src="assets/vista_explodida_encaixe.png" alt="Vista Explodida do Encaixe Snap-Fit" class="w-full h-44 object-contain bg-slate-950 p-2 group-hover:scale-105 transition duration-300">
+            <div class="p-3 bg-slate-900/90 text-xs text-slate-300 font-medium">Vista Explodida: Moldura & Corpo</div>
+          </div>
+          <div class="glass rounded-xl overflow-hidden group">
+            <img src="assets/corte_transversal_encaixe.png" alt="Corte Transversal do Dente de Fecho" class="w-full h-44 object-contain bg-slate-950 p-2 group-hover:scale-105 transition duration-300">
+            <div class="p-3 bg-slate-900/90 text-xs text-slate-300 font-medium">Corte Transversal: Dente Snap Travado</div>
+          </div>
+          <div class="glass rounded-xl overflow-hidden group">
+            <img src="assets/corpo_deitado_stl_mesa.png" alt="Corpo Deitado na Mesa sem suportes" class="w-full h-44 object-contain bg-slate-950 p-2 group-hover:scale-105 transition duration-300">
+            <div class="p-3 bg-slate-900/90 text-xs text-slate-300 font-medium">Corpo na Mesa PEI (Supports = OFF)</div>
+          </div>
+          <div class="glass rounded-xl overflow-hidden group">
+            <img src="assets/render_demo_cabos.png" alt="Pente Organizador com 10 Fios" class="w-full h-44 object-contain bg-slate-950 p-2 group-hover:scale-105 transition duration-300">
+            <div class="p-3 bg-slate-900/90 text-xs text-slate-300 font-medium">Organizador de Cabos (PETG)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATERIAIS & PARÂMETROS DO FATIADOR -->
+  <section id="materiais" class="py-16 border-t border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">03 / MATERIAIS & FATIAMENTO</h2>
+        <h3 class="text-3xl font-bold text-white tracking-tight">Estratégia Híbrida: PLA + PETG</h3>
+        <p class="text-slate-400 mt-3 leading-relaxed">
+          Para atingir o melhor acabamento estético sem empenamento e simultaneamente garantir tenacidade elástica que impeça a quebra dos clips com o tempo.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <!-- PLA Box -->
+        <div class="glass-card rounded-2xl p-7 border-t-4 border-t-emerald-400">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-xl font-bold text-white">Peças Estruturais • PLA</h4>
+            <span class="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300">Rigidez & Estética</span>
+          </div>
+          <p class="text-sm text-slate-300 mb-6">
+            O corpo e a moldura frontal devem ser impressos em <strong>PLA</strong> (ou PLA Matte). Garante linhas nítidas, zero empenamento (warping) nas dimensões de 92×65 mm e acabamento de alta qualidade na face frontal.
+          </p>
+          <ul class="space-y-2.5 text-xs font-mono text-slate-300">
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Ficheiros:</span>
+              <span class="text-white">moldura_frontal.stl, corpo_glicometer.stl</span>
+            </li>
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Orientação:</span>
+              <span class="text-emerald-400 font-bold">100% Deitado de Costas (Z=0)</span>
+            </li>
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Suportes:</span>
+              <span class="text-emerald-400 font-bold">OFF (Desativados)</span>
+            </li>
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Paredes / Topo / Fundo:</span>
+              <span class="text-white">3 a 4 perímetros / 4 camadas</span>
+            </li>
+            <li class="flex justify-between py-1">
+              <span class="text-slate-400">Infill:</span>
+              <span class="text-white">15% a 20% Gyroid</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- PETG Box -->
+        <div class="glass-card rounded-2xl p-7 border-t-4 border-t-amber-400">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-xl font-bold text-white">Peças Elásticas • PETG</h4>
+            <span class="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-amber-500/20 text-amber-300">Resiliência & Fadiga</span>
+          </div>
+          <p class="text-sm text-slate-300 mb-6">
+            Os clips de retenção do ecrã e o pente organizador de cabos <strong>têm de ser impressos em PETG</strong>. O PLA sofre de fluência plástica sob tensão contínua (creep), enquanto o PETG flexiona e trava sem quebrar nem descolar.
+          </p>
+          <ul class="space-y-2.5 text-xs font-mono text-slate-300">
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Ficheiros:</span>
+              <span class="text-white">clips_retencao_lcd.stl, organizador_cabos.stl</span>
+            </li>
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Preenchimento (Clips):</span>
+              <span class="text-amber-400 font-bold">100% Maciço (ou 6 perímetros)</span>
+            </li>
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Temperatura Bocal / Mesa:</span>
+              <span class="text-white">235–245 °C / 75–85 °C</span>
+            </li>
+            <li class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Adesão de Camada:</span>
+              <span class="text-white">Fusão intermolecular máxima</span>
+            </li>
+            <li class="flex justify-between py-1">
+              <span class="text-slate-400">Tempo de Impressão:</span>
+              <span class="text-white">&lt; 15 minutos</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOM & CUSTOS -->
+  <section id="bom" class="py-16 bg-dark-850/60 border-t border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">04 / LISTA DE MATERIAIS & ORÇAMENTO</h2>
+        <h3 class="text-3xl font-bold text-white tracking-tight">Bill of Materials (BOM) & Custo Real</h3>
+        <p class="text-slate-400 mt-3 leading-relaxed">
+          O projeto foi concebido para utilizar componentes comerciais padrão de baixo custo e ampla disponibilidade no AliExpress, Amazon ou lojas de eletrónica.
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-800 mb-8 glass">
+        <table class="w-full text-left text-sm text-slate-300">
+          <thead class="bg-slate-900/80 text-xs font-mono uppercase text-slate-400 border-b border-slate-800">
+            <tr>
+              <th class="py-4 px-6">Componente</th>
+              <th class="py-4 px-6">Especificação Exata</th>
+              <th class="py-4 px-6 text-center">Qtd</th>
+              <th class="py-4 px-6">Papel no Sistema</th>
+              <th class="py-4 px-6 text-right">Preço Est. (€)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/60 font-sans text-xs sm:text-sm">
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">Ecrã TFT 3.5" SPI</td>
+              <td class="py-4 px-6 font-mono text-xs text-brand-300">MSP3520 (KMRTM35018-SPI) ILI9488 480×320</td>
+              <td class="py-4 px-6 text-center font-mono">1</td>
+              <td class="py-4 px-6 text-slate-400">Display gráfico, toque XPT2046 e leitor SD integrado</td>
+              <td class="py-4 px-6 text-right font-mono font-bold text-white">11.50 €</td>
+            </tr>
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">Microcontrolador</td>
+              <td class="py-4 px-6 font-mono text-xs text-brand-300">ESP32 DevKit V1 (30 ou 38 pinos) ESP-WROOM-32</td>
+              <td class="py-4 px-6 text-center font-mono">1</td>
+              <td class="py-4 px-6 text-slate-400">Processamento dual-core, Wi-Fi 2.4GHz e HTTPS client</td>
+              <td class="py-4 px-6 text-right font-mono font-bold text-white">4.50 €</td>
+            </tr>
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">Cablagem Interna</td>
+              <td class="py-4 px-6 font-mono text-xs text-brand-300">Fios DuPont Fêmea-Fêmea 10–15 cm</td>
+              <td class="py-4 px-6 text-center font-mono">10</td>
+              <td class="py-4 px-6 text-slate-400">Ligação ponto-a-ponto organizada com pente elástico</td>
+              <td class="py-4 px-6 text-right font-mono font-bold text-white">1.00 €</td>
+            </tr>
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">Alimentação & Cabo</td>
+              <td class="py-4 px-6 font-mono text-xs text-brand-300">Cabo USB Micro / Type-C (1.5 m)</td>
+              <td class="py-4 px-6 text-center font-mono">1</td>
+              <td class="py-4 px-6 text-slate-400">Alimentação standard 5V via carregador USB (500mA min)</td>
+              <td class="py-4 px-6 text-right font-mono font-bold text-white">2.00 €</td>
+            </tr>
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">Filamentos 3D</td>
+              <td class="py-4 px-6 font-mono text-xs text-brand-300">PLA (~65 g) + PETG (~5 g)</td>
+              <td class="py-4 px-6 text-center font-mono">~70 g</td>
+              <td class="py-4 px-6 text-slate-400">Corpo autoportante, moldura lisa, clips e organizador</td>
+              <td class="py-4 px-6 text-right font-mono font-bold text-white">1.80 €</td>
+            </tr>
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">Fixações Auxiliares</td>
+              <td class="py-4 px-6 font-mono text-xs text-brand-300">4x Parafusos M2×6 mm ou M2.5×6 mm (para ESP32)</td>
+              <td class="py-4 px-6 text-center font-mono">4</td>
+              <td class="py-4 px-6 text-slate-400">Fixação do ESP32 nos postes de 6 mm da base</td>
+              <td class="py-4 px-6 text-right font-mono font-bold text-white">0.50 €</td>
+            </tr>
+            <tr class="bg-brand-500/10 font-bold">
+              <td class="py-4 px-6 text-brand-400" colspan="4">INVESTIMENTO TOTAL ESTIMADO:</td>
+              <td class="py-4 px-6 text-right font-mono text-brand-400 text-base">~21.30 € – 25.00 €</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-slate-500 italic text-center">
+        * Preços médios de retalho online incluindo portes combinados. Não requer soldaduras se forem usados conectores com pinos pré-instalados.
+      </p>
+    </div>
+  </section>
+
+  <!-- PINOUT & GESTÃO DE CABOS -->
+  <section id="pinout" class="py-16 border-t border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">05 / PINOUT & CABLAGEM</h2>
+        <h3 class="text-3xl font-bold text-white tracking-tight">Esquema Elétrico SPI de Alta Velocidade</h3>
+        <p class="text-slate-400 mt-3 leading-relaxed">
+          O ESP32 comunica com o controlador ILI9488 a frequências até 40 MHz através da interface Hardware SPI (VSPI). Siga rigorosamente esta correspondência de pinos.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Pinout Table -->
+        <div class="lg:col-span-2 glass-card rounded-2xl p-6 overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="text-xs font-mono uppercase text-slate-400 border-b border-slate-700/80">
+              <tr>
+                <th class="py-3 px-3">Pino LCD (MSP3520)</th>
+                <th class="py-3 px-3">Pino ESP32</th>
+                <th class="py-3 px-3">Função de Hardware</th>
+                <th class="py-3 px-3">Cor Fio Recomendada</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-mono text-xs">
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-red-400">1. VCC</td>
+                <td class="py-2.5 px-3 text-red-300">VIN (5V)</td>
+                <td class="py-2.5 px-3 text-slate-400">Alimentação do LDO do ecrã</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-1.5 align-middle"></span>Vermelho</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-slate-300">2. GND</td>
+                <td class="py-2.5 px-3 text-slate-300">GND</td>
+                <td class="py-2.5 px-3 text-slate-400">Massa Comum</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-black border border-slate-600 mr-1.5 align-middle"></span>Preto</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-yellow-400">3. CS</td>
+                <td class="py-2.5 px-3 text-yellow-300">GPIO 15</td>
+                <td class="py-2.5 px-3 text-slate-400">Chip Select (Display)</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-yellow-400 mr-1.5 align-middle"></span>Amarelo</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-orange-400">4. RESET</td>
+                <td class="py-2.5 px-3 text-orange-300">GPIO 4 (ou 3.3V)</td>
+                <td class="py-2.5 px-3 text-slate-400">Hardware Reset</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-orange-400 mr-1.5 align-middle"></span>Laranja</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-blue-400">5. DC / RS</td>
+                <td class="py-2.5 px-3 text-blue-300">GPIO 2</td>
+                <td class="py-2.5 px-3 text-slate-400">Data / Command Selector</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-blue-500 mr-1.5 align-middle"></span>Azul</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-emerald-400">6. SDI (MOSI)</td>
+                <td class="py-2.5 px-3 text-emerald-300">GPIO 23</td>
+                <td class="py-2.5 px-3 text-slate-400">SPI Data Master Out</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-emerald-500 mr-1.5 align-middle"></span>Verde</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-purple-400">7. SCK (CLK)</td>
+                <td class="py-2.5 px-3 text-purple-300">GPIO 18</td>
+                <td class="py-2.5 px-3 text-slate-400">SPI Clock Pulse (até 40MHz)</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-purple-500 mr-1.5 align-middle"></span>Roxo</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-amber-300">8. LED / BL</td>
+                <td class="py-2.5 px-3 text-amber-200">GPIO 21 (ou 3.3V)</td>
+                <td class="py-2.5 px-3 text-slate-400">Controlo de Backlight (PWM)</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-white mr-1.5 align-middle"></span>Branco</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-slate-400">9. SDO (MISO)</td>
+                <td class="py-2.5 px-3 text-slate-400">GPIO 19</td>
+                <td class="py-2.5 px-3 text-slate-400">SPI Data Master In (Opcional)</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-gray-400 mr-1.5 align-middle"></span>Cinzento</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40">
+                <td class="py-2.5 px-3 font-bold text-indigo-400">10. T_CS / T_IRQ</td>
+                <td class="py-2.5 px-3 text-indigo-300">GPIO 5 / GPIO 25</td>
+                <td class="py-2.5 px-3 text-slate-400">Touch Controller (se ativo)</td>
+                <td class="py-2.5 px-3"><span class="inline-block w-3 h-3 rounded-full bg-indigo-500 mr-1.5 align-middle"></span>Castanho</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Cable Organizer Guide -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <h4 class="text-lg font-bold text-white mb-3 flex items-center">
+              <span>Como Usar o Organizador</span>
+              <span class="ml-2 text-xs bg-cyan-500/20 text-cyan-300 font-mono px-2 py-0.5 rounded">PETG</span>
+            </h4>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+              O pente possui 10 ranhuras elásticas desenhadas para cabos standard de 1.3–1.4 mm de diâmetro exterior:
+            </p>
+            <ol class="space-y-3 text-xs text-slate-400 list-decimal list-inside">
+              <li>Ligue primeiro as 10 pontas DuPont aos pinos do ecrã LCD.</li>
+              <li>Junte os 10 fios em paralelo numa fita plana, ordenados conforme a tabela.</li>
+              <li>Pressione cada fio pela entrada cónica de 1.15 mm até que ele entre no canal cilíndrico de 1.4 mm. O PETG flexionará e fechará com fixação firme.</li>
+              <li>A fita plana dobra-se suavemente em curva U para ligar ao ESP32 sem nós nem tensões.</li>
+            </ol>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-800">
+            <img src="assets/render_demo_cabos.png" alt="Pente Organizador com 10 Fios" class="w-full h-36 object-contain rounded-lg bg-slate-950 p-2">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUIA DE MONTAGEM PASSO-A-PASSO -->
+  <section id="montagem" class="py-16 bg-dark-850/60 border-t border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">06 / GUIA DE MONTAGEM</h2>
+        <h3 class="text-3xl font-bold text-white tracking-tight">Montagem Mecânica em 5 Passos Simples</h3>
+        <p class="text-slate-400 mt-3 leading-relaxed">
+          Sem recurso a cola, sem fita adesiva que perde aderência com o calor do ecrã e com manutenção acessível a qualquer momento.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Passo 1 -->
+        <div class="glass-card rounded-2xl p-6 relative">
+          <div class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-mono font-bold flex items-center justify-center text-sm mb-4">
+            01
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Impressão 3D das Peças</h4>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            Imprima o corpo e a moldura frontal em PLA com <strong>Supports = OFF</strong>. Imprima os 2 clips de retenção e o organizador de cabos em PETG sólido.
+          </p>
+          <div class="text-xs font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1.5 rounded-lg border border-brand-500/20">
+            ✓ 0 mm³ suportes na mesa
+          </div>
+        </div>
+
+        <!-- Passo 2 -->
+        <div class="glass-card rounded-2xl p-6 relative">
+          <div class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-mono font-bold flex items-center justify-center text-sm mb-4">
+            02
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Instalação do Ecrã na Moldura</h4>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            Coloque a moldura frontal virada para baixo sobre uma superfície macia. Deite a placa do ecrã MSP3520 sobre o batente interior da moldura (o vidro fica centrado na janela chanfrada).
+          </p>
+          <div class="text-xs font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700">
+            Janela útil: 70.0 × 46.5 mm
+          </div>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="glass-card rounded-2xl p-6 relative">
+          <div class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-mono font-bold flex items-center justify-center text-sm mb-4">
+            03
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Travar os Clips de PETG</h4>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            Encaixe os 2 clips de PETG sobre os 4 pinos fendidos da moldura. Pressione para baixo até ouvir o clique duplo: as pontas farpadas travam no rebaixo cónico superior dos clips.
+          </p>
+          <div class="text-xs font-mono text-amber-300 bg-amber-500/10 px-2.5 py-1.5 rounded-lg border border-amber-500/20">
+            ✓ Travamento 100% mecânico
+          </div>
+        </div>
+
+        <!-- Passo 4 -->
+        <div class="glass-card rounded-2xl p-6 relative">
+          <div class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-mono font-bold flex items-center justify-center text-sm mb-4">
+            04
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Fixar ESP32 e Cablagem</h4>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            Aparafuse a placa ESP32 nos postes de 6 mm da base com 4 parafusos M2/M2.5. Ligue os fios ao LCD, organize-os no pente elástico e ligue as pontas ao ESP32.
+          </p>
+          <div class="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2.5 py-1.5 rounded-lg border border-cyan-500/20">
+            ✓ Cablagem limpa em fita plana
+          </div>
+        </div>
+
+        <!-- Passo 5 -->
+        <div class="glass-card rounded-2xl p-6 relative">
+          <div class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-mono font-bold flex items-center justify-center text-sm mb-4">
+            05
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Fecho Final com Snap-Fit</h4>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            Alinhe a moldura frontal com o degrau de 3 mm do corpo principal. Pressione uniformemente nos 4 cantos até ouvir os 4 cliques sonoros. A caixa fica selada de forma sólida e rente.
+          </p>
+          <div class="text-xs font-mono text-emerald-300 bg-emerald-500/10 px-2.5 py-1.5 rounded-lg border border-emerald-500/20">
+            ✓ Face perfeitamente coplanar
+          </div>
+        </div>
+
+        <!-- Callout Teste Firmware -->
+        <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between border border-brand-500/30">
+          <div>
+            <div class="w-8 h-8 rounded-full bg-brand-500 text-dark-900 font-mono font-bold flex items-center justify-center text-sm mb-4">
+              ⚡
+            </div>
+            <h4 class="text-lg font-bold text-white mb-2">Firmware & Primeiro Arranque</h4>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Carregue o firmware PlatformIO via USB. Ao ligar, o ecrã inicializa a ligação Wi-Fi, obtém os dados do Nightscout/Dexcom e apresenta a leitura com gráfico temporal.
+            </p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-slate-800 text-xs text-brand-400 font-mono">
+            Platform: espressif32 | TFT_eSPI
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOADS & FICHEIROS STL -->
+  <section class="py-16 border-t border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-xs uppercase tracking-widest font-mono text-brand-400 font-bold mb-2">FICHEIROS DE PRODUÇÃO</h2>
+      <h3 class="text-3xl font-bold text-white tracking-tight mb-8">Modelos STL Calibrados para Impressão</h3>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto text-left">
+        <div class="glass-card rounded-xl p-5">
+          <div class="text-xs font-mono text-emerald-400 font-bold mb-1">MOLDURA FRONTAL</div>
+          <div class="text-sm font-bold text-white">moldura_frontal.stl</div>
+          <p class="text-xs text-slate-400 mt-2">Janela 70×46.5 mm, 4 pinos fendidos para clips e 4 dentes snap-fit macho.</p>
+          <div class="mt-4 text-xs font-mono text-slate-500">Material: PLA</div>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="text-xs font-mono text-accent-500 font-bold mb-1">CORPO PRINCIPAL</div>
+          <div class="text-sm font-bold text-white">corpo_glicometer.stl</div>
+          <p class="text-xs text-slate-400 mt-2">Exportado deitado de costas na mesa. 4 cavidades snap fêmea e postes ESP32.</p>
+          <div class="mt-4 text-xs font-mono text-slate-500">Material: PLA (Supports=OFF)</div>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="text-xs font-mono text-amber-400 font-bold mb-1">CLIPS DE RETENÇÃO</div>
+          <div class="text-sm font-bold text-white">clips_retencao_lcd.stl</div>
+          <p class="text-xs text-slate-400 mt-2">2 barras maciças de 2.4 mm com rebaixo superior anti-descolamento.</p>
+          <div class="mt-4 text-xs font-mono text-slate-500">Material: PETG 100%</div>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="text-xs font-mono text-cyan-400 font-bold mb-1">ORGANIZADOR CABOS</div>
+          <div class="text-sm font-bold text-white">organizador_cabos.stl</div>
+          <p class="text-xs text-slate-400 mt-2">Pente flexível com 10 ranhuras circulares para fios DuPont.</p>
+          <div class="mt-4 text-xs font-mono text-slate-500">Material: PETG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-10 border-t border-slate-800/80 bg-slate-950 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-brand-500"></span>
+        <span class="text-slate-400 font-semibold">GLICOMETER • Projeto Open-Source de Engenharia Biomédica IoT</span>
+      </div>
+      <div>
+        Projetado para impressão 3D FDM de alta fiabilidade • Licença MIT
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

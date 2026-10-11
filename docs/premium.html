@@ -1,76 +1,891 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang=pt>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GLICOMETER 3.5" — Conceito Premium (horizontal)</title>
+<meta charset=UTF-8>
+<meta name=viewport content=width=device-width, initial-scale=1.0>
+<title>GLICOMETER V4 — Relógio de Cabeceira Touch 3.5</title>
 <style>
-  body { background:#0d0f12; color:#e8e8ea; font-family:-apple-system,system-ui,"Segoe UI",sans-serif; margin:0; padding:40px 28px; }
-  h1 { font-size:22px; font-weight:600; margin:0 0 6px; letter-spacing:-.3px; }
-  .sub { color:#7d828a; font-size:13px; margin-bottom:34px; max-width:820px; line-height:1.6; }
-  .stage { display:flex; gap:54px; flex-wrap:wrap; align-items:center; }
-  /* caixa 94x64 mm a 5.5 px/mm = 517x352 */
-  .device { position:relative; width:517px; height:352px; border-radius:34px;
-    background:linear-gradient(150deg,#41474f 0%,#2b3038 44%,#1c2026 100%);
-    box-shadow:0 36px 80px rgba(0,0,0,.75), inset 0 1px 1px rgba(255,255,255,.14),
-      inset 0 -2px 6px rgba(0,0,0,.5); }
-  .device::before { content:""; position:absolute; inset:0; border-radius:34px; pointer-events:none;
-    background:repeating-linear-gradient(90deg,
-      rgba(255,255,255,.05) 0 1.3px, rgba(0,0,0,0) 1.3px 6px,
-      rgba(0,0,0,.09) 6px 7.4px, rgba(0,0,0,0) 7.4px 12px);
-    mask:linear-gradient(180deg,transparent 8%,#000 16%,#000 88%,transparent 96%);
-    -webkit-mask:linear-gradient(180deg,transparent 8%,#000 16%,#000 88%,transparent 96%); }
-  .device::after { content:""; position:absolute; left:12%; right:12%; bottom:-22px; height:52px;
-    background:radial-gradient(ellipse at center, rgba(0,220,80,.5) 0%, rgba(0,220,80,0) 70%);
-    filter:blur(10px); border-radius:50%; z-index:-1; }
-  /* ecra 76x52 mm -> 418x286, sem moldura */
-  .scr { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:418px; height:286px; border-radius:20px; background:#080a0c; overflow:hidden;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 0 0 1px rgba(255,255,255,.045),
-      inset 0 0 40px rgba(0,0,0,.9); }
-  .scr .st { position:absolute; top:10px; left:16px; right:0; font-size:10px; letter-spacing:1px; }
-  .scr .div { position:absolute; top:34px; bottom:24px; left:170px; width:1px; background:rgba(255,255,255,.07); }
-  /* painel esquerdo */
-  .scr .time { position:absolute; top:88px; left:0; width:170px; text-align:center; font-size:58px; font-weight:600; color:#eef1f4; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
-  .scr .wth { position:absolute; top:168px; left:0; width:170px; text-align:center; font-size:15px; color:#6f757e; }
-  /* painel direito */
-  .scr .glu { position:absolute; top:60px; left:170px; right:0; text-align:center; font-size:118px; font-weight:700; color:#2ee06a; letter-spacing:-4px; line-height:1; }
-  .scr .del { position:absolute; top:206px; left:170px; right:0; text-align:center; font-size:26px; color:#8b9199; }
-  .scr .del b { color:#2ee06a; font-weight:600; }
-  .scr .age { position:absolute; bottom:14px; left:170px; right:0; text-align:center; font-size:11px; color:#4a5058; }
-  .info { max-width:360px; }
-  .info h3 { font-size:14px; color:#aeb4bc; margin:0 0 10px; font-weight:600; }
-  .info ul { margin:0; padding-left:16px; font-size:13px; color:#8b9199; line-height:1.8; }
-  .info li b { color:#e8e8ea; }
+ :root {
+ --glow-color: rgba(46, 224, 106, 0.45);
+ --glu-color: #2ee06a;
+ --bezel-color: #ffffff;
+ --body-color: #e4d7c5;
+ }
+ * { box-sizing: border-box; }
+ body {
+ background: #090b0e;
+ color: #e8e8ea;
+ font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto, sans-serif;
+ margin: 0;
+ padding: 30px 20px 60px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ min-height: 100vh;
+ }
+ .header {
+ text-align: center;
+ max-width: 840px;
+ margin-bottom: 30px;
+ }
+ .badge-tag {
+ display: inline-block;
+ padding: 5px 14px;
+ background: rgba(0, 200, 255, 0.15);
+ color: #00c8ff;
+ border: 1px solid rgba(0, 200, 255, 0.35);
+ border-radius: 20px;
+ font-size: 11px;
+ font-weight: 700;
+ letter-spacing: 1px;
+ text-transform: uppercase;
+ margin-bottom: 12px;
+ }
+ h1 {
+ font-size: 32px;
+ font-weight: 700;
+ letter-spacing: -0.5px;
+ margin: 0 0 10px;
+ }
+ .sub {
+ color: #949ca8;
+ font-size: 15px;
+ line-height: 1.6;
+ margin: 0;
+ }
+
+ /* Palco de Apresentação */
+ .stage {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 36px;
+ align-items: center;
+ justify-content: center;
+ max-width: 1050px;
+ width: 100%;
+ }
+
+ /* Relógio Físico 3D */
+ .scene {
+ position: relative;
+ width: 480px;
+ height: 330px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+ .ground-glow {
+ position: absolute;
+ bottom: 25px;
+ width: 380px;
+ height: 70px;
+ background: var(--glow-color);
+ filter: blur(45px);
+ border-radius: 50%;
+ z-index: 1;
+ transition: background 0.4s ease;
+ }
+ .clock-3d {
+ position: relative;
+ width: 430px;
+ height: 275px;
+ z-index: 2;
+ transform: perspective(1000px) rotateX(4deg);
+ transition: transform 0.3s ease;
+ }
+
+ /* Corpo Traseiro Bi-Peça (Inspirado no Echo Show) */
+ .rear-body {
+ position: absolute;
+ inset: -6px -10px -10px -10px;
+ background: linear-gradient(135deg, #d8cbba 0%, #c4b5a2 100%);
+ border-radius: 46px;
+ box-shadow: 
+ 0 26px 50px rgba(0,0,0,0.65),
+ 0 6px 14px rgba(0,0,0,0.4),
+ inset 0 2px 3px rgba(255,255,255,0.4);
+ z-index: 1;
+ }
+
+ /* Moldura Frontal Branca */
+ .front-bezel {
+ position: absolute;
+ inset: 0;
+ border-radius: 38px;
+ background: linear-gradient(145deg, #ffffff 0%, #f2f4f7 60%, #e2e5e9 100%);
+ box-shadow: 
+ inset 0 2px 2px rgba(255,255,255,1),
+ inset 0 -3px 6px rgba(0,0,0,0.15),
+ 0 12px 24px rgba(0,0,0,0.35);
+ z-index: 3;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ }
+
+ /* Vidro do Ecrã 3.5 Touch (480x320) */
+  .screen {
+    width: 384px;
+    height: 246px;
+    background: #080a0d;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+      inset 0 0 25px rgba(0,0,0,0.95),
+      0 0 0 1.5px rgba(0,0,0,0.5);
+    transition: filter 0.3s ease;
+    user-select: none;
+  }
+
+  /* Barra Superior do Ecrã */
+  .scr-topbar {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+  .scr-brand {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 0.8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* BOTÕES TOUCH NO ECRÃ (100% CENTRADOS) */
+  .touch-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .touch-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #cbd5e1;
+    width: 68px;
+    height: 26px;
+    padding: 0;
+    border-radius: 13px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.15s ease;
+    outline: none;
+  }
+  .touch-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+  }
+  .touch-btn:active {
+    transform: scale(0.93);
+  }
+  .touch-btn.active-mute {
+    background: rgba(239, 68, 68, 0.28);
+    border-color: #ef4444;
+    color: #fca5a5;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+  }
+  .touch-btn.active-night {
+    background: rgba(99, 102, 241, 0.35);
+    border-color: #818cf8;
+    color: #c7d2fe;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+  }
+
+  .divider {
+    position: absolute;
+    left: 152px;
+    top: 38px;
+    bottom: 20px;
+    width: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* Painel Esquerdo: Relógio & Meteorologia */
+  .panel-left {
+    position: absolute;
+    left: 0;
+    top: 36px;
+    bottom: 0;
+    width: 152px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .clock-time {
+    font-size: 50px;
+    font-weight: 600;
+    color: #f3f4f6;
+    letter-spacing: -2px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .clock-date {
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* Pílula de Meteorologia com Ícone Nítido */
+  .clock-weather {
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #f1f5f9;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 5px 12px;
+    border-radius: 14px;
+  }
+  .weather-icon-svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Painel Direito: Glicemia e Tendência */
+  .panel-right {
+    position: absolute;
+    left: 153px;
+    right: 0;
+    top: 36px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .glucose-val {
+    font-size: 104px;
+    font-weight: 800;
+    color: var(--glu-color);
+    letter-spacing: -5px;
+    line-height: 0.88;
+    transition: color 0.3s ease;
+  }
+  .glucose-trend {
+    margin-top: 10px;
+    font-size: 19px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .glucose-trend b {
+    color: var(--glu-color);
+    transition: color 0.3s ease;
+  }
+  .glucose-meta {
+    margin-top: 5px;
+    font-size: 11px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  /* Painel de Controlo Interativo */
+  .controls {
+    background: #13171e;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 24px;
+    width: 420px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  }
+  .controls h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .btn-mode {
+    background: #1c222c;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #e5e7eb;
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+  }
+  .btn-mode:hover {
+    background: #252d3a;
+    border-color: rgba(255,255,255,0.2);
+  }
+  .btn-mode.active {
+    background: rgba(46, 224, 106, 0.15);
+    border-color: #2ee06a;
+    color: #2ee06a;
+  }
+
+  .touch-info-box {
+    background: rgba(0, 200, 255, 0.08);
+    border: 1px solid rgba(0, 200, 255, 0.25);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #7dd3fc;
+  }
+  .touch-info-box strong { color: #ffffff; }
+
+  .specs {
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 12px;
+    color: #949ca8;
+    line-height: 1.8;
+  }
+  .specs strong { color: #f3f4f6; }
+
+  /* Secção da BOM (Lista de Peças & Custos) */
+  .bom-container {
+    max-width: 960px;
+    width: 100%;
+    margin-top: 40px;
+    background: #13171e;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  }
+  .bom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .bom-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bom-total-badge {
+    background: rgba(46, 224, 106, 0.15);
+    border: 1px solid rgba(46, 224, 106, 0.4);
+    color: #2ee06a;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .bom-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .bom-table th {
+    text-align: left;
+    padding: 10px 12px;
+    color: #949ca8;
+    background: rgba(255,255,255,0.03);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    border-radius: 6px;
+  }
+  .bom-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #e2e8f0;
+  }
+  .bom-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+  .bom-price {
+    font-weight: 700;
+    color: #2ee06a;
+    text-align: right;
+  }
+  .bom-th-price {
+    text-align: right !important;
+  }
+  .bom-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    color: #cbd5e1;
+  }
+  .bom-tag-touch {
+    background: rgba(0, 200, 255, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(0, 200, 255, 0.3);
+  }
+
+  /* Secção de Fotos/Renders */
+  .render-showcase {
+    max-width: 960px;
+    width: 100%;
+    margin-top: 40px;
+    background: #13171e;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  }
+  .render-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+  .render-grid img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+    background: #0d1117;
+  }
+  .render-caption {
+    padding: 20px 24px;
+    font-size: 14px;
+    color: #949ca8;
+    line-height: 1.6;
+    background: #13171e;
+  }
 </style>
 </head>
 <body>
-<h1>GLICOMETER 3.5" — Conceito Premium (horizontal)</h1>
-<div class="sub">Ecrã 3.5" 480×320 · dois painéis lado a lado · monólito grafite fosco · ecrã sem moldura · <b>glow ambiente</b> na base. O ecrã maior permite relógio+tempo e glucose sempre visíveis, com o valor enorme.</div>
 
-<div class="stage">
-  <div class="device">
-    <div class="scr">
-      <div class="st"><svg width="18" height="18" viewBox="0 0 20 20" style="vertical-align:-4px;"><path d="M2 7 Q10 1 18 7" stroke="#5a616a" stroke-width="2.5" fill="none"/><path d="M5 11 Q10 6 15 11" stroke="#5a616a" stroke-width="2.5" fill="none"/><path d="M8 14.5 Q10 12.5 12 14.5" stroke="#5a616a" stroke-width="2.5" fill="none"/><circle cx="10" cy="17" r="1.6" fill="#5a616a"/></svg>&nbsp;&nbsp;<span style="color:#00c8ff;">MUTE</span>&nbsp;&nbsp;<span style="color:#5a616a;">NIGHT</span></div>
-      <div class="div"></div>
-      <div class="time">14:32</div>
-      <div class="wth">18°C&nbsp;<svg width="22" height="22" viewBox="0 0 40 40" style="vertical-align:-6px;"><circle cx="20" cy="20" r="8" fill="#e8b020"/><g stroke="#e8b020" stroke-width="3"><line x1="20" y1="2" x2="20" y2="8"/><line x1="20" y1="32" x2="20" y2="38"/><line x1="2" y1="20" x2="8" y2="20"/><line x1="32" y1="20" x2="38" y2="20"/><line x1="7" y1="7" x2="11" y2="11"/><line x1="29" y1="29" x2="33" y2="33"/><line x1="7" y1="33" x2="11" y2="29"/><line x1="29" y1="11" x2="33" y2="7"/></g></svg></div>
-      <div class="glu">132</div>
-      <div class="del"><b>+10</b> · 5min&nbsp;&nbsp;<svg width="20" height="20" viewBox="0 0 30 30" style="vertical-align:-3px;"><polygon points="15,2 5,20 25,20" fill="#2ee06a"/></svg></div>
-      <div class="age">há 2 min · mg/dL</div>
+<div class=header>
+  <div class=badge-tag>TOUCH XPT2046 NATIVO · ZERO BOTÕES FÍSICOS</div>
+  <h1>GLICOMETER V4 — Interface Tátil 3.5</h1>
+ <p class=sub>Os botões <strong>MUTE</strong> e <strong>NIGHT</strong> foram integrados no próprio ecrã tátil (no topo direito). Caixa 100% lisa e estanque como um produto comercial, sem fios nem furos adicionais!</p>
+</div>
+
+<div class=stage>
+ <!-- Visualizador do Relógio com Touch -->
+ <div class=scene>
+ <div class=ground-glow id=groundGlow></div>
+ <div class=clock-3d>
+ 
+ <!-- Concha Traseira Canelada (Sem botões mecânicos!) -->
+ <div class=rear-body></div>
+
+ <!-- Moldura Frontal Snap-fit -->
+ <div class=front-bezel>
+ <!-- Ecrã 3.5 Touch ILI9488 + XPT2046 -->
+        <div class=screen id=mainScreen>
+          
+          <!-- Barra Superior com Touch Buttons -->
+          <div class=scr-topbar>
+            <div class=scr-brand>
+              <svg width=12 height=12 viewBox=0 0 24 24><circle cx=12 cy=12 r=10 fill=#10b981/></svg>
+              DEXCOM G7
+            </div>
+            
+            <!-- BOTÕES DE TOQUE NO ECRÃ (100% CENTRADOS) -->
+            <div class="touch-buttons">
+              <button class="touch-btn" id="touchMute" onclick="handleTouch('mute')" title="Toque no ecrã para Silenciar">MUTE</button>
+              <button class="touch-btn" id="touchNight" onclick="handleTouch('night')" title="Toque no ecrã para Modo Noturno">NIGHT</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Painel Esquerdo (Hora & Meteorologia) -->
+          <div class="panel-left">
+            <div class="clock-time" id="clockText">14:32</div>
+            <div class="clock-date" id="clockDate">SÁB, 10 OUT</div>
+            
+            <!-- Pílula de Meteorologia com Ícone do Sol/Tempo Visível -->
+            <div class="clock-weather">
+              <svg class="weather-icon-svg" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4.5" fill="#f59e0b" fill-opacity="0.3"></circle>
+                <path d="M12 2v2.5M12 19.5v2.5M2 12h2.5M19.5 12h2.5M4.93 4.93l1.8 1.8M17.27 17.27l1.8 1.8M4.93 19.07l1.8-1.8M17.27 6.73l1.8-1.8"></path>
+              </svg>
+              <span id="weatherTemp">19°C</span>
+            </div>
+          </div>
+
+          <!-- Painel Direito (Glicemia & Tendência) -->
+          <div class=panel-right id=glucosePanel>
+            <div class=glucose-val id=gluVal>132</div>
+            <div class=glucose-trend id=gluTrend>
+              <b>+10</b> · 5 min
+              <svg width=20 height=20 viewBox=0 0 24 24 id=trendIcon>
+                <path d=M12 4 L4 16 L20 16 Z fill=#2ee06a/>
+              </svg>
+            </div>
+            <div class=glucose-meta id=gluMeta>há 2 min · mg/dL</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="info">
-    <h3>Porque o 3.5" horizontal é melhor</h3>
-    <ul>
-      <li><b>Dois painéis reais</b> — relógio+tempo à esquerda, glucose à direita (como o CYGM), sem slideshow</li>
-      <li><b>Valor maior</b> — 480px de largura → o número fica ainda mais legível à distância</li>
-      <li><b>Ecrã 3.5"</b> — mais nítido; mesma família de driver (ILI9488/ILI9341-compatível, SPI)</li>
-      <li><b>Monólito grafite</b> + canelado + glow na base (cor da zona)</li>
-      <li><b>Horizontal</b> — assenta como um rádio-despertador de mesa, silhueta baixa e elegante</li>
-    </ul>
+  <!-- Painel de Modos e Demonstração -->
+  <div class=controls>
+    <h3>
+      <span>Cenários de Teste</span>
+      <span style=font-size:12px; color:#10b981; font-weight:600;>● Ao Vivo</span>
+    </h3>
+
+    <div class=touch-info-box>
+      <strong>✨ Vantagem do Touch XPT2046:</strong><br>
+      Ao tocar diretamente nos botões <strong>MUTE</strong> e <strong>NIGHT</strong> no canto superior do ecrã, o ESP32 lê as coordenadas X/Y via SPI. Não precisas de furar a carcaça nem soldar botões mecânicos!
+    </div>
+
+    <div class=btn-grid>
+      <button class=btn-mode active onclick=setMode('normal', this)>🟢 Normal (132)</button>
+      <button class=btn-mode onclick=setMode('high', this)>🟡 Alta (245)</button>
+      <button class=btn-mode onclick=setMode('low', this)>🔴 Urgente (62)</button>
+      <button class=btn-mode onclick=setMode('stale', this)>⚪ Sem Sinal / Stale</button>
+      <button class=btn-mode onclick=setMode('setup', this)>⚙️ WiFi Portal</button>
+      <button class=btn-mode onclick=testAlarm(this)>🔊 Testar Beep</button>
+    </div>
+
+    <div class=specs>
+      <div><strong>Ecrã:</strong> 3.5 TFT SPI ILI9488 (480×320) + XPT2046 Touch</div>
+ <div><strong>Touch Pinos:</strong> T_CLK (18), T_CS (21), T_DIN (23), T_DO (19), T_IRQ (22)</div>
+ <div><strong>Carcaça:</strong> Monobloco liso, sem furos exteriores, montagem snap-fit</div>
+ <div><strong>NeoPixel:</strong> Glow inferior que reflete na mesinha de cabeceira</div>
+ </div>
+ </div>
+</div>
+
+<!-- Mostra Fotográfica / 3D Renders -->
+<div class="render-showcase">
+  <div class="render-grid">
+    <img src="file:///C:/Users/marco/.gemini/antigravity/brain/e8f0d75a-cbfb-4a9b-87bb-829a2bf13e2d/v3_montagem_preview.png" alt="Montagem 3D V3" />
+    <img src="file:///C:/Users/marco/.gemini/antigravity/brain/e8f0d75a-cbfb-4a9b-87bb-829a2bf13e2d/glicometer_perfect_pebble_1791416898282.jpg" alt="Render Oficial Pebble" />
+  </div>
+  <div class="render-caption">
+    <strong>Design Final V3 & Montagem:</strong> À esquerda, a nova carcaça monobloco com base a Z=0 e furação exata de 92×49.5 mm. À direita, a renderização oficial do produto final. Com o touch ativo, a linha superior da carcaça fica totalmente limpa e moderna.
   </div>
 </div>
+
+<!-- BOM — Lista de Materiais e Custos do Projeto -->
+<div class="bom-container">
+  <div class="bom-header">
+    <h2>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2ee06a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+      BOM — Bill of Materials (GLICOMETER V4)
+    </h2>
+    <div class="bom-total-badge">Hardware Total: ~28 – 39 €</div>
+  </div>
+
+  <div class="bom-section-title">1. Peças Impressas 3D (Bambu Lab P1S)</div>
+  <table class="bom-table">
+    <thead>
+      <tr>
+        <th>Componente</th>
+        <th>Ficheiro / Configuração</th>
+        <th>Material</th>
+        <th>Qtd</th>
+        <th class="bom-th-price">Custo Est.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Corpo Monobloco V3</strong> (Base Z=0, perfil Pebble canelado)</td>
+        <td><code>corpo_glicometer.stl</code></td>
+        <td><span class="bom-tag">PLA / PETG Bege Areia</span></td>
+        <td>1</td>
+        <td class="bom-price">~2.50 €</td>
+      </tr>
+      <tr>
+        <td><strong>Moldura Frontal Snap-fit</strong> (Garras flexíveis + furos 92×49.5mm)</td>
+        <td><code>moldura_frontal.stl</code></td>
+        <td><span class="bom-tag">PLA Branco Acetinado</span></td>
+        <td>1</td>
+        <td class="bom-price">~1.20 €</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="bom-section-title">2. Eletrónica Principal</div>
+  <table class="bom-table">
+    <thead>
+      <tr>
+        <th>Componente</th>
+        <th>Especificação Técnica</th>
+        <th>Notas / Ligação</th>
+        <th>Qtd</th>
+        <th class="bom-th-price">Custo Est.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Microcontrolador ESP32</strong></td>
+        <td>ESP32-WROOM DevKit (30 pinos, CP2102/CH340)</td>
+        <td>WiFi 2.4GHz + BLE integrado. Encaixe nos rails deslizantes.</td>
+        <td>1</td>
+        <td class="bom-price">~8.00 €</td>
+      </tr>
+      <tr>
+        <td><strong>Display 3.5" TFT SPI + Touch</strong></td>
+        <td>MSP3520 / KMRTM3501 (480×320 ILI9488 + Touch XPT2046)</td>
+        <td><span class="bom-tag-touch">Touch Integrado</span> SPI partilhado. Dispensa botões físicos!</td>
+        <td>1</td>
+        <td class="bom-price">~12.50 €</td>
+      </tr>
+      <tr>
+        <td><strong>LED Iluminação Ambiente</strong></td>
+        <td>WS2812B NeoPixel 5050 RGB (5V)</td>
+        <td>PIN 33 (Glow inferior refletido na mesa de cabeceira).</td>
+        <td>1</td>
+        <td class="bom-price">~0.40 €</td>
+      </tr>
+      <tr>
+        <td><strong>Buzzer de Alarme Sonoro</strong></td>
+        <td>Buzzer Piezo Passivo (som multifrequência)</td>
+        <td>PIN 27 (Beeps diferenciados para Hipo, Hiper e Stale).</td>
+        <td>1</td>
+        <td class="bom-price">~0.80 €</td>
+      </tr>
+      <tr>
+        <td><strong>Cabo de Alimentação</strong></td>
+        <td>Cabo USB-C ou Micro-USB com saída traseira em L</td>
+        <td>Alimentação contínua 5V 1A de cabeceira.</td>
+        <td>1</td>
+        <td class="bom-price">~2.50 €</td>
+      </tr>
+      <tr>
+        <td><strong>Transformador 5V</strong></td>
+        <td>Carregador USB padrão de 5V ≥ 1A (ex: telemóvel)</td>
+        <td>Uso contínuo silencioso.</td>
+        <td>1</td>
+        <td class="bom-price">~4.00 €</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="bom-section-title">3. Fixação e Parafusos</div>
+  <table class="bom-table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Especificação</th>
+        <th>Aplicação</th>
+        <th>Qtd</th>
+        <th class="bom-th-price">Custo Est.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Parafusos M2</strong></td>
+        <td>M2 × 5 mm ou 6 mm (cabeça cilíndrica/chata)</td>
+        <td>Fixam os 4 cantos do ecrã MSP3520 aos pilares da moldura.</td>
+        <td>4</td>
+        <td class="bom-price">~0.60 €</td>
+      </tr>
+      <tr>
+        <td><strong>Fecho da Carcaça</strong></td>
+        <td>4 Garras Snap-Fit integradas no design 3D</td>
+        <td><span class="bom-tag">100% Sem parafusos</span> Encaixe por clique rápido.</td>
+        <td>—</td>
+        <td class="bom-price">0.00 €</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="bom-section-title">4. Ecossistema & Dados Médicos</div>
+  <table class="bom-table">
+    <thead>
+      <tr>
+        <th>Serviço / Sensor</th>
+        <th>Descrição</th>
+        <th>Acesso</th>
+        <th>Qtd</th>
+        <th class="bom-th-price">Custo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Sensor Dexcom G7</strong></td>
+        <td>CGM (Monitor Contínuo de Glicose)</td>
+        <td>Transmissão contínua para a Cloud Dexcom</td>
+        <td>1</td>
+        <td class="bom-price">Prescrição / ~60–90 € mês</td>
+      </tr>
+      <tr>
+        <td><strong>API Dexcom Cloud (v3)</strong></td>
+        <td>OAuth2 Developer API (Pull a cada 60s)</td>
+        <td>Conta gratuita de programador Dexcom</td>
+        <td>—</td>
+        <td class="bom-price">Grátis (0.00 €)</td>
+      </tr>
+      <tr>
+        <td><strong>Open-Meteo API</strong></td>
+        <td>Meteorologia e temperatura local por geolocalização IP</td>
+        <td>API pública sem chave necessária</td>
+        <td>—</td>
+        <td class="bom-price">Grátis (0.00 €)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 18px; padding: 14px; background: rgba(255,255,255,0.03); border-radius: 12px; font-size: 12px; color: #949ca8; line-height: 1.6;">
+    <strong style="color:#f3f4f6;">💡 Vantagem Económica e de Montagem do Touch:</strong><br>
+    Graças à utilização do touch XPT2046 do ecrã MSP3520 para os botões <code>MUTE</code> e <code>NIGHT</code>, pouparam-se os 2 botões mecânicos externos, resistências pull-up e cablagem manual, resultando numa montagem mais limpa, rápida e 100% estanque.
+  </div>
+</div>
+
+<script>
+ let isNight = false;
+ let isMute = false;
+
+ let audioCtx = null;
+ function getAudioCtx() {
+ if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+ return audioCtx;
+ }
+
+ function playTone(freq, durationMs) {
+ if (isMute) return;
+ try {
+ const ctx = getAudioCtx();
+ const osc = ctx.createOscillator();
+ const gain = ctx.createGain();
+ osc.type = 'sine';
+ osc.frequency.setValueAtTime(freq, ctx.currentTime);
+ gain.gain.setValueAtTime(0.12, ctx.currentTime);
+ gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + durationMs/1000);
+ osc.connect(gain);
+ gain.connect(ctx.destination);
+ osc.start();
+ osc.stop(ctx.currentTime + durationMs/1000);
+ } catch(e) {}
+ }
+
+ function handleTouch(action) {
+ if (action === 'mute') {
+ isMute = !isMute;
+ document.getElementById('touchMute').classList.toggle('active-mute', isMute);
+ playTone(isMute ? 440 : 880, 100);
+ } else if (action === 'night') {
+ isNight = !isNight;
+ document.getElementById('touchNight').classList.toggle('active-night', isNight);
+ document.getElementById('mainScreen').style.filter = isNight ? 'brightness(0.35)' : 'none';
+ document.getElementById('groundGlow').style.opacity = isNight ? '0.2' : '1';
+ playTone(660, 80);
+ }
+ }
+
+ function setMode(mode, btn) {
+ document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+ if (btn) btn.classList.add('active');
+
+ const root = document.documentElement;
+ const panel = document.getElementById('glucosePanel');
+ const gluVal = document.getElementById('gluVal');
+ const gluTrend = document.getElementById('gluTrend');
+ const gluMeta = document.getElementById('gluMeta');
+
+ panel.style.display = 'flex';
+
+ if (mode === 'normal') {
+ root.style.setProperty('--glow-color', 'rgba(46, 224, 106, 0.45)');
+ root.style.setProperty('--glu-color', '#2ee06a');
+ gluVal.textContent = '132';
+ gluTrend.innerHTML = '<b>+10</b> · 5 min <svg width=20 height=20 viewBox=0 0 24 24><path d=M12 4 L4 16 L20 16 Z fill=#2ee06a/></svg>';
+ gluMeta.textContent = 'há 2 min · mg/dL';
+ } else if (mode === 'high') {
+ root.style.setProperty('--glow-color', 'rgba(245, 158, 11, 0.55)');
+ root.style.setProperty('--glu-color', '#f59e0b');
+ gluVal.textContent = '245';
+ gluTrend.innerHTML = '<b>+18</b> · 5 min <svg width=20 height=20 viewBox=0 0 24 24><path d=M12 4 L4 16 L20 16 Z fill=#f59e0b/></svg>';
+ gluMeta.textContent = 'há 3 min · mg/dL';
+ playTone(1200, 250);
+ } else if (mode === 'low') {
+ root.style.setProperty('--glow-color', 'rgba(239, 68, 68, 0.7)');
+ root.style.setProperty('--glu-color', '#ef4444');
+ gluVal.textContent = '62';
+ gluTrend.innerHTML = '<b>-14</b> · 5 min <svg width=20 height=20 viewBox=0 0 24 24><path d=M12 20 L4 8 L20 8 Z fill=#ef4444/></svg>';
+ gluMeta.textContent = 'URGENTE · mg/dL';
+ playTone(800, 150);
+ setTimeout(() => playTone(800, 150), 200);
+ setTimeout(() => playTone(800, 300), 400);
+ } else if (mode === 'stale') {
+ root.style.setProperty('--glow-color', 'rgba(156, 163, 175, 0.25)');
+ root.style.setProperty('--glu-color', '#9ca3af');
+ gluVal.textContent = '---';
+ gluTrend.innerHTML = '<span style=color:#6b7280>Sem sinal</span>';
+ gluMeta.textContent = 'há 22 min (stale)';
+ } else if (mode === 'setup') {
+ root.style.setProperty('--glow-color', 'rgba(0, 200, 255, 0.35)');
+ panel.innerHTML = '<div style=font-family:monospace; font-size:13px; color:#fff; text-align:center; padding:10px;><div style=color:#10b981; font-weight:bold; font-size:16px; margin-bottom:6px;>WIFI MANAGER</div><div style=color:#9ca3af; font-size:11px; margin-bottom:10px;>Ligue o telemóvel ao ponto de acesso:</div><div style=background:rgba(0,200,255,0.15); border:1px solid rgba(0,200,255,0.4); padding:6px 12px; border-radius:8px; color:#38bdf8; font-size:15px; font-weight:bold;>GLICOMETER-Setup</div><div style=color:#6b7280; font-size:10px; margin-top:8px;>IP: 192.168.4.1</div></div>';
+ }
+ }
+
+ function testAlarm(btn) {
+ btn.classList.add('active');
+ setTimeout(() => btn.classList.remove('active'), 600);
+ playTone(1000, 120);
+ setTimeout(() => playTone(1400, 180), 160);
+ }
+
+ function updateClock() {
+ const d = new Date();
+ const h = String(d.getHours()).padStart(2, '0');
+ const m = String(d.getMinutes()).padStart(2, '0');
+ document.getElementById('clockText').textContent = h + ':' + m;
+ }
+ updateClock();
+ setInterval(updateClock, 10000);
+</script>
+
 </body>
 </html>

@@ -11,3 +11,16 @@
 # SO
 Thumbs.db
 desktop.ini
+# Temp OpenSCAD images and crops
+modelo-3d/crop_*.png
+modelo-3d/foto*.png
+modelo-3d/test*.png
+modelo-3d/v2_*.png
+modelo-3d/v3_*.png
+modelo-3d/preview_*.png
+modelo-3d/*view*.png
+modelo-3d/*validado*.png
+modelo-3d/teste_*.png
+modelo-3d/master_*.png
+modelo-3d/corte_*.png
+
