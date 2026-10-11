@@ -1,0 +1,136 @@
+{
+    "project": {
+        "title": "GLICOMETER_PRO_V2",
+        "description": "IoT Continuous Glucose Monitor Carrier Board with ESP32-S3, 21700 Battery, I2S Audio, and MSP3520 3.5\" Display Header",
+        "version": "2.2",
+        "author": "Canditos",
+        "board_size": {
+            "width": 85.0,
+            "height": 60.0,
+            "unit": "mm",
+            "layers": 2
+        },
+        "components": [
+            {
+                "designator": "U1",
+                "package": "MODULE-ESP32-S3-WROOM-1",
+                "lcsc": "C2913200",
+                "desc": "MCU ESP32-S3-WROOM-1-N8R8"
+            },
+            {
+                "designator": "U2",
+                "package": "SOP-8",
+                "lcsc": "C16581",
+                "desc": "TP4056 1A Li-Ion Charger"
+            },
+            {
+                "designator": "U3",
+                "package": "SOT-23-5",
+                "lcsc": "C173361",
+                "desc": "AP2112K-3.3V 600mA Ultra-Low Noise LDO"
+            },
+            {
+                "designator": "U4",
+                "package": "QFN-16_3x3mm",
+                "lcsc": "C2682619",
+                "desc": "MAX98357A I2S 3.2W Class-D Amplifier"
+            },
+            {
+                "designator": "MIC1",
+                "package": "MEMS-SMD_4x3mm",
+                "lcsc": "C2913204",
+                "desc": "MSM261S4030 I2S Digital MEMS Microphone"
+            },
+            {
+                "designator": "SPK1",
+                "package": "CONN-TH_2P-P1.25MM",
+                "lcsc": "C2925298",
+                "desc": "Speaker JST 1.25mm Header for 1511 Box"
+            },
+            {
+                "designator": "J1",
+                "package": "USB-C-16P-SMD",
+                "lcsc": "C2765186",
+                "desc": "USB Type-C 16-Pin Receptacle"
+            },
+            {
+                "designator": "J2",
+                "package": "CONN-TH_2P-P2.00MM",
+                "lcsc": "C131337",
+                "desc": "JST-PH 2.0mm Battery Connector"
+            },
+            {
+                "designator": "J3",
+                "package": "HDR-F-2.54_1X14",
+                "lcsc": "C224523",
+                "desc": "Female Header 1x14 2.54mm for MSP3520 Display"
+            },
+            {
+                "designator": "BZ1",
+                "package": "BUZZER-SMD-8.5X8.5",
+                "lcsc": "C94599",
+                "desc": "Active Magnetic Buzzer 3.3V/5V"
+            },
+            {
+                "designator": "Q1",
+                "package": "SOT-23",
+                "lcsc": "C2146",
+                "desc": "S8050 NPN Transistor for Buzzer"
+            },
+            {
+                "designator": "Q2",
+                "package": "SOT-23",
+                "lcsc": "C15127",
+                "desc": "AO3401A P-MOSFET Power Path Auto-Switch"
+            },
+            {
+                "designator": "D1",
+                "package": "SMA",
+                "lcsc": "C15886",
+                "desc": "SS34 Schottky Diode 40V 3A"
+            },
+            {
+                "designator": "D2",
+                "package": "SOD-323",
+                "lcsc": "C81598",
+                "desc": "1N4148WS Diode Flyback"
+            },
+            {
+                "designator": "D3",
+                "package": "LED0603",
+                "lcsc": "C2286",
+                "desc": "Red LED Charge Indicator"
+            },
+            {
+                "designator": "D4",
+                "package": "LED0603",
+                "lcsc": "C2290",
+                "desc": "Green LED Full Charge Indicator"
+            },
+            {
+                "designator": "LED1",
+                "package": "LED-SMD_5050",
+                "lcsc": "C114586",
+                "desc": "WS2812B RGB NeoPixel"
+            },
+            {
+                "designator": "LDR1",
+                "package": "TH-LDR-5MM",
+                "lcsc": "C2895420",
+                "desc": "GL5528 Light Dependent Resistor"
+            },
+            {
+                "designator": "SW1",
+                "package": "SW-SMD_3X6",
+                "lcsc": "C318884",
+                "desc": "Tactile Button (Reset)"
+            },
+            {
+                "designator": "SW2",
+                "package": "SW-SMD_3X6",
+                "lcsc": "C318884",
+                "desc": "Tactile Button (Boot / Snooze / Mute)"
+            }
+        ]
+    }
+}
